@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // import ShowResults from '../ShowResults/ShowResults';
 import { Card, CardActionArea, CardContent, CardMedia, Button, Typography, TextField, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
 import './AddWord.css';
+import axios from 'axios';
 
 class Search extends Component {
 
@@ -30,7 +31,19 @@ class Search extends Component {
     }
 
     checkDataBaseForWord = () => {
-        
+        // Runs axios request to server to check for match of searched word, runs modal if match is found
+        console.log('in checkDataBaseForWord');
+        axios({
+            method: 'GET',
+            url: `/api/translate/checkDB/en/${this.props.newWord.translateFromReducer}`
+        })
+        .then( response => {
+            console.log(response);
+            // have this generate a modal if it is successful, which prompts the user to use the existing word
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     render() {
