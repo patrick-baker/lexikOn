@@ -14,6 +14,7 @@ import Footer from '../Footer/Footer';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
 import AboutPage from '../AboutPage/AboutPage';
+import AddWord from '../AddWord/AddWord';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 
@@ -55,13 +56,23 @@ class App extends Component {
               path="/info"
               component={InfoPage}
             />
+            <ProtectedRoute
+              exact
+              path="/add-word"
+              component={AddWord}
+            />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />
           </Switch>
           <Footer />
+          <pre>{JSON.stringify(this.props, 2, null)}</pre>
         </div>
       </Router>
   )}
 }
 
-export default connect()(App);
+const mapReduxStateToProps = (reduxState) => {
+  return reduxState;
+}
+
+export default connect(mapReduxStateToProps)(App);
