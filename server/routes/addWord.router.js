@@ -9,8 +9,11 @@ router.get('/', (req, res) => {
     
 });
 
+// need Posts to words_in_sets on submit in AddWord.js
+// both for new words and words that already exist in the DB
+
 // needs authorization
-// posts new word to database
+// posts new word to database from AddWord form
 router.post('/newWord', (req, res) => {
     console.log('in addWord/newWord post route, req.body:', req.body);
     const queryText = `INSERT INTO "words" ("english_entry", "russian_entry", "image_url") VALUES ($1, $2, $3);`;

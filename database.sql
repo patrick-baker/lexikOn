@@ -54,3 +54,20 @@ CREATE TABLE "user_words" (
     "correct_in_a_row" INT DEFAULT 0,
     "last_correct_guess" date
 );
+
+-- make two or more users on registration page before running following code
+
+-- initial word entries
+INSERT INTO "words" ("english_entry", "russian_entry", "image_url")
+VALUES ('Water', 'Воды', 'https://pixabay.com/get/57e8d44a4f5aaa14f6da8c7dda79367a163fd9e256556c4870287fd5974bcd5bbd_640.jpg');
+
+INSERT INTO "words" ("english_entry", "russian_entry", "image_url")
+VALUES ('Food', 'Еда', 'https://pixabay.com/get/57e8dd444851ad14f6da8c7dda79367a163fd9e256556c4870287fd59f49c25bbb_1280.jpg');
+
+-- initial card set creations, one for each user
+INSERT INTO "card_sets" ("name", "creator_user_id")
+VALUES ('simple words', 1), ('easy words', 2);
+
+-- entries so that each card set shows up for each user.
+INSERT INTO "user_sets" ("user_id", "set_id")
+VALUES (1, 1), (1, 2), (2, 1), (2, 2);
