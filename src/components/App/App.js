@@ -17,12 +17,14 @@ import AboutPage from '../AboutPage/AboutPage';
 import AddWord from '../AddWord/AddWord';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
+import UserCardSets from '../UserCardSets/UserCardSets';
 
 import './App.css';
 
 class App extends Component {
   componentDidMount () {
-    this.props.dispatch({type: 'FETCH_USER'})
+    this.props.dispatch({type: 'FETCH_USER'});
+    this.props.dispatch({type: 'FETCH_USER_CARD_SETS'}); // fetches card sets for this user, to show on card sets page
   }
 
   render() {
@@ -60,6 +62,11 @@ class App extends Component {
               exact
               path="/add-word"
               component={AddWord}
+            />
+            <ProtectedRoute
+              exact
+              path="/card-sets"
+              component={UserCardSets}
             />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />

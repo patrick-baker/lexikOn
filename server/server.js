@@ -13,6 +13,7 @@ const userRouter = require('./routes/user.router');
 const fetchImageRouter = require('./routes/image.router');
 const fetchTranslationRouter = require('./routes/translate.router');
 const addWordRouter = require('./routes/addWord.router');
+const cardListsRouter= require('./routes/cardLists.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -30,6 +31,7 @@ app.use('/api/user', userRouter);
 app.use('/api/image', fetchImageRouter);
 app.use('/api/translate', fetchTranslationRouter);
 app.use('/api/addWord', addWordRouter);
+app.use('/api/cardLists', cardListsRouter);
 
 // Serve static files
 app.use(express.static('build'));
