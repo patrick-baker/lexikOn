@@ -31,23 +31,20 @@ function* fetchTranslationSaga(action) {
     }
 }
 
-// // Runs axios request to server to check for match of searched word
-// function* getDataBaseWordMatch(action) {
-//     try {
-//         // action.payload is the searched word, local state keyword in AddWord.js component
-//         const matchResponse = yield axios.get(`/api/translate/checkDB/en/${action.payload}`);
-//         console.log(matchResponse);
-//         // sends result of request to reducer
-//         yield put ({ type: 'GET_WORD_MATCH', payload: matchResponse});
-//     } catch (error) {
-//         console.log('error getting word match in DB', error);
-//     }
-// }
+// called from AddWord component if word does not already exist in DB
+function* addNewWordToSetSaga(action) {
+    try {
+        console.log('in addNewWordToSetSaga, action.payload:', action.payload);
+        yield axios.post(`/api/addWord/newWord`, action.payload);
+    } catch (error) {
+        console.log('error posting new word in addNewWordToSetSaga, error:', error);
+    }
+}
 
 function* newWordSaga() {
     yield takeLatest('FETCH_TRANSLATION', fetchTranslationSaga);
     yield takeLatest('FETCH_IMAGE', fetchImageSaga);
-    // yield takeLatest('FETCH_WORD_MATCH', getDataBaseWordMatch);
+    yield takeLatest('ADD_NEW_WORD_TO_SET', addNewWordToSetSaga);
 }
 
 export default newWordSaga;

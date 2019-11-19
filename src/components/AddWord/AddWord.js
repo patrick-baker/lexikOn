@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import ShowResults from '../ShowResults/ShowResults';
-import { Card, CardActionArea, CardContent, CardMedia, Button, Typography, TextField, Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Button, Typography, TextField, Radio, RadioGroup, FormControlLabel } from '@material-ui/core'; // components for newWordCard contents
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
 import './AddWord.css';
 import axios from 'axios';
+import Swal from 'sweetalert2'
 
-class Search extends Component {
-
-    componentDidMount() {
-        this.props.dispatch({ type: 'GET_CATEGORIES' });
-    }
-
+class AddWord extends Component {
     state = {
         keyword: '',
-        imageToShow: ''
+        imageToShow: '',
+        open: false
     }
 
     handleInput = (event) => {
@@ -30,6 +27,10 @@ class Search extends Component {
         })
     }
 
+    handleClose = () => {
+        this.setState({ open: false });
+      };
+
     checkDataBaseForWord = () => {
         // Runs axios request to server to check for match of searched word, runs modal if match is found
         console.log('in checkDataBaseForWord');
@@ -37,13 +38,33 @@ class Search extends Component {
             method: 'GET',
             url: `/api/translate/checkDB/en/${this.props.newWord.translateFromReducer}`
         })
-        .then( response => {
-            console.log(response);
-            // have this generate a modal if it is successful, which prompts the user to use the existing word
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .then(response => {
+                // if response from database is conclusive, sets local state open property to true, 
+                //which renders a dialog to prompt user to use the preexisting word in their card set
+                if (response.data[0]) { 
+                    this.setState({
+                        open: true
+                    })
+                }
+                else {
+                    // sends current translation results to SAGA, to make new word row in DB and add to card set.
+                    console.log(this.props.newWord);
+                    this.props.dispatch({type: 'ADD_NEW_WORD_TO_SET', payload: {
+                        original_word: this.props.newWord.translateFromReducer,
+                        translation: this.props.newWord.translationReducer,
+                        image: this.props.newWord.imagesReducer[0].largeImageURL
+                        }
+                    })
+                    Swal.fire(
+                        'The word has been added to your deck!',
+                        'Success',
+                        'success'
+                      )
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     render() {
@@ -79,45 +100,59 @@ class Search extends Component {
                                         labelPlacement="start"
                                     />
                                 </RadioGroup>
-                                </div>
-                                <Typography gutterBottom color="textSecondary" variant="h5" component="h2">
-                                    Original Word: {this.props.newWord.translateFromReducer}
-                                </Typography>
-                                <Typography variant="body2" variant="h5" component="p">
-                                    Translation: {this.props.newWord.translationReducer}
-                                </Typography>
-                                {/* {this.props.imagesReducer[0] && <img className="add-word-image" src={this.props.imagesReducer[0].webformatURL}/>} */}
+                            </div>
+                            <Typography gutterBottom color="textSecondary" variant="h5" component="h2">
+                                Original Word: {this.props.newWord.translateFromReducer}
+                            </Typography>
+                            <Typography variant="body2" variant="h5" component="p">
+                                Translation: {this.props.newWord.translationReducer}
+                            </Typography>
                         </CardContent>
-                            {this.props.newWord.imagesReducer[0] && <CardMedia
-                                title={this.props.newWord.translateFromReducer}
-                                src={this.props.newWord.imagesReducer[0].largeImageURL} 
-                                // Math.floor(Math.random() * this.props.imagesReducer.length) //function to find random image for translation
-                                className="add-word-image"
-                                component="img"
-                                >
-                                {/* <img 
-                                src={this.props.imagesReducer[0].webformatURL} 
-                                className="add-word-image"
-                                /> */}
-                            </CardMedia>}
+                        {this.props.newWord.imagesReducer[0] && <CardMedia
+                            title={this.props.newWord.translateFromReducer}
+                            src={this.props.newWord.imagesReducer[0].largeImageURL}
+                            // Math.floor(Math.random() * this.props.imagesReducer.length) //function to find random image for translation
+                            className="add-word-image"
+                            component="img"
+                        >
+                        </CardMedia>}
                     </CardActionArea>
-                        {/* <CardActions>
-                        <Button size="small" color="primary">
-                            Submit
-                        </Button>
-                    </CardActions> */}
                 </Card>
-                    {/* <ShowResults /> */}
-                    <Button size="small" color="primary" variant="outlined" onClick={this.checkDataBaseForWord}>
-                        Submit
+                <Button size="small" color="primary" variant="outlined" onClick={this.checkDataBaseForWord}>
+                    Submit
                     </Button>
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Use Pre-existing word?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            This word already exists in the database. 
+                            The preexisting word will be added to your card set.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Disagree
+                        </Button>
+                        {/* Pressing agree should add the preexisting word to the card set, 
+                        Post request to cards_words junction table */}
+                        <Button onClick={this.handleClose} color="primary" autoFocus>
+                            Agree
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <pre>{JSON.stringify(this.state, null, 2)}</pre>
             </div>
-                )
-            }
-        }
-        
+        )
+    }
+}
+
 const mapReduxStateToProps = (reduxState) => {
     return reduxState;
-              }
-            
-export default connect(mapReduxStateToProps)(Search);
+}
+
+export default connect(mapReduxStateToProps)(AddWord);

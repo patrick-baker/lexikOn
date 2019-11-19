@@ -65,7 +65,7 @@ class App extends Component {
             <Route render={() => <h1>404</h1>} />
           </Switch>
           <Footer />
-          <pre>{JSON.stringify(this.props, 2, null)}</pre>
+          {/* <pre>{JSON.stringify(this.props, 2, null)}</pre> */}
         </div>
       </Router>
   )}

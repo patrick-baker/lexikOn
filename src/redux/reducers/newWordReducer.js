@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 // holds array of received objects holding image information from Unslpashed API
 const imagesReducer = (state = [], action) => {
     if (action.type === 'GET_IMAGES') {
-        console.log(action.payload.length)
+        console.log('in imagesReducer, length of imagesReducer array', action.payload.length);
         return action.payload;
     }
     return state;
