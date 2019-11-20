@@ -23,9 +23,29 @@ function* fetchInverseUserCardSets(action) {
     }
 }
 
+// creates new card set, and adds it to the user's repertoire
+function* postNewCardSet(action) {
+    try {
+        console.log('in postNewCardSet, card set name:', action.payload);
+        yield axios.post(`/api/cardLists/newCardSet`, {setName: action.payload});
+        yield put ({type: 'FETCH_USER_CARD_SETS'});
+    } catch (error) {
+        console.log('error posting new card set, error:', error);
+    }
+}
+
+function* postAddExistingCardSet(action) {
+    console.log('in postAddExistingCardSet, card set id', action.payload);
+    yield axios.post(`/api/cardLists/addExistingCardSet`, {setId: action.payload});
+    yield put ({type: 'FETCH_USER_CARD_SETS'});
+    yield put ({type: 'FETCH_INVERSE_USER_CARD_SETS'});
+}
+
 function* cardSetsSaga() {
     yield takeLatest('FETCH_USER_CARD_SETS', fetchUserCardSets);
     yield takeLatest('FETCH_INVERSE_USER_CARD_SETS', fetchInverseUserCardSets);
+    yield takeLatest('POST_NEW_CARD_SET', postNewCardSet);
+    yield takeLatest('POST_ADD_EXISTING_CARD_SET_TO_REPERTOIRE', postAddExistingCardSet);
 }
 
 export default cardSetsSaga;

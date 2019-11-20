@@ -9,6 +9,11 @@ const ListContainer = styled(Container) ({
 
 class CardSetList extends Component {
 
+    // adds the pre-existing set to the user's repertoire
+    handleAddExistingCardSet = (setId) => {
+        this.props.dispatch({type: 'POST_ADD_EXISTING_CARD_SET_TO_REPERTOIRE', payload: setId});
+    }
+
     render() {
         return (
             <>
@@ -20,7 +25,9 @@ class CardSetList extends Component {
                 {this.props.listType === 'inverseUserSets' && this.props.cardSets.inverseUserCardSetsReducer[0] && // renders users card sets on cardSets page
                 <ListContainer maxWidth="lg">
                 {this.props.cardSets.inverseUserCardSetsReducer.map(set => 
-                    <p key={set.id}>{set.name}</p>)}
+                    <p key={set.id}
+                    onClick={() => this.handleAddExistingCardSet(set.id)}
+                    >{set.name}</p>)}
                 </ListContainer>}
             </>
         )
