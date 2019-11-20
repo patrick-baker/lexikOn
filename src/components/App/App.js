@@ -18,6 +18,7 @@ import AddWord from '../AddWord/AddWord';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 import UserCardSets from '../UserCardSets/UserCardSets';
+import InverseUserCardSets from '../InverseUserCardSets/InverseUserCardSets';
 
 import './App.css';
 
@@ -25,6 +26,7 @@ class App extends Component {
   componentDidMount () {
     this.props.dispatch({type: 'FETCH_USER'});
     this.props.dispatch({type: 'FETCH_USER_CARD_SETS'}); // fetches card sets for this user, to show on card sets page
+    this.props.dispatch({type: 'FETCH_INVERSE_USER_CARD_SETS'}); // fetches all card sets that this user does not have in repertoire, to show on card sets to add page
   }
 
   render() {
@@ -67,6 +69,11 @@ class App extends Component {
               exact
               path="/card-sets"
               component={UserCardSets}
+            />
+            <ProtectedRoute
+              exact
+              path="/inverse-card-sets"
+              component={InverseUserCardSets}
             />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />

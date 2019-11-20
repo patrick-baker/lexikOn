@@ -11,11 +11,18 @@ class CardSetList extends Component {
 
     render() {
         return (
-            <ListContainer maxWidth="lg">
-               {this.props.cardSets.userCardSetsReducer[0] && 
-               this.props.cardSets.userCardSetsReducer.map(set => 
+            <>
+                {this.props.listType === 'userSets' && this.props.cardSets.userCardSetsReducer[0] && // renders users card sets on cardSets page
+                <ListContainer maxWidth="lg">
+                {this.props.cardSets.userCardSetsReducer.map(set => 
                     <p key={set.id}>{set.name}</p>)}
-            </ListContainer>
+                </ListContainer>}
+                {this.props.listType === 'inverseUserSets' && this.props.cardSets.inverseUserCardSetsReducer[0] && // renders users card sets on cardSets page
+                <ListContainer maxWidth="lg">
+                {this.props.cardSets.inverseUserCardSetsReducer.map(set => 
+                    <p key={set.id}>{set.name}</p>)}
+                </ListContainer>}
+            </>
         )
     }
 }
