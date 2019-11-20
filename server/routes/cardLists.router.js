@@ -44,11 +44,49 @@ router.get('/inverseUserLists', rejectUnauthenticated, (req, res) => {
     })
 });
 
-/**
- * POST route template
- */
-router.post('/', (req, res) => {
+ // posts new card set to DB, then subsequently posts to user_sets to add that set to the user's repertoire
+router.post('/newCardSet', rejectUnauthenticated, (req,res) => {
+    console.log('req.user', req.user);
+    console.log('req.body:', req.body);
+    const queryText= `INSERT INTO "card_sets" ("name", "creator_user_id")
+    VALUES ($1, $2) RETURNING id;`
+    pool.query(queryText, [req.body.setName, req.user.id])
+    .then((results) => {
+        console.log(results);
+        const newSetid = results.rows[0].id;
+        console.log('newSetid:', newSetid);
+        const queryText=`INSERT INTO "user_sets" ("user_id", "set_id")
+        VALUES ($1, $2);`;
+        pool.query(queryText, [req.user.id, newSetid])
+        .then(() => {
+            console.log('successful POST of new card set and user_set');
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            console.log('error in POST to user_sets from new card set Post', err);
+            res.sendStatus(500);
+        })
+    })
+    .catch((err) => {
+        console.log('error in new card set Post', err);
+        res.sendStatus(403);
+    })
+})
 
-});
+router.post('/addExistingCardSet', rejectUnauthenticated, (req, res) => {
+    console.log('req.user', req.user);
+    console.log('req.body:', req.body);
+    const queryText=`INSERT INTO "user_sets" ("user_id", "set_id")
+        VALUES ($1, $2);`;
+    pool.query(queryText, [req.user.id, req.body.setId])
+    .then(() => {
+        console.log('in addExistingCardSet');
+        res.sendStatus(200);
+    })
+    .catch(err => {
+        console.log('error in addExistingCardSet:', err)
+        res.sendStatus(500);
+    })
+})
 
 module.exports = router;

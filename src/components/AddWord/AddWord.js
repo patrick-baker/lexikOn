@@ -4,7 +4,7 @@ import { Card, CardActionArea, CardContent, CardMedia, Button, Typography, TextF
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
 import './AddWord.css';
 import axios from 'axios';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 class AddWord extends Component {
     state = {
