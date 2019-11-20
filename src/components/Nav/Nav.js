@@ -28,6 +28,9 @@ const Nav = (props) => (
           <Link className="nav-link" to="/card-sets">
             Your Card Sets
           </Link>
+          <Link className="nav-link" to="/inverse-card-sets">
+            Add a Pre-existing Set
+          </Link>
           <LogOutButton className="nav-link"/>
         </>
       )}
