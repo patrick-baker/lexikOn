@@ -4,6 +4,7 @@ import loginMode from './loginModeReducer';
 import user from './userReducer';
 import newWord from './newWordReducer';
 import cardSets from './cardSetsReducer';
+import words from './wordsReducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   newWord, // will contain API call images, translation and searched word from AddWord page
   cardSets, // will contain stored information for card sets to load onto the DOM
+  words, // will contain information regarding which words from DB to show onto the DOM
 });
 
 export default rootReducer;
