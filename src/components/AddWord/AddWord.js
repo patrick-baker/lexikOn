@@ -10,8 +10,68 @@ class AddWord extends Component {
     state = {
         keyword: '',
         imageToShow: '',
-        open: false
+        open: false,
+        preexistingWordId: '',
     }
+
+    componentDidMount () {
+        console.log('in add word component, this.props.match.params.setId', this.props.match.params.setId);
+    }
+
+    checkDataBaseForWord = () => {
+        // Runs axios request to server to check for match of searched word, runs modal if match is found
+        console.log('in checkDataBaseForWord');
+        axios({
+            method: 'GET',
+            url: `/api/translate/checkDB/en/${this.props.newWord.translateFromReducer}`
+        })
+            .then(response => {
+                // if response from database is conclusive, sets local state open property to true, 
+                //which renders a dialog to prompt user to use the preexisting word in their card set
+                if (response.data[0]) {
+                    console.log(response.data[0]); 
+                    this.setState({
+                        open: true,
+                        preexistingWordId: response.data[0].id
+
+                    })
+                }
+                else {
+                    // sends current translation results to SAGA, to make new word row in DB and add to card set.
+                    console.log(this.props.newWord);
+                    this.props.dispatch({type: 'ADD_NEW_WORD_TO_SET', payload: {
+                        original_word: this.props.newWord.translateFromReducer,
+                        translation: this.props.newWord.translationReducer,
+                        image: this.props.newWord.imagesReducer[0].largeImageURL,
+                        set_id: this.props.match.params.setId
+                        }
+                    })
+                    Swal.fire(
+                        'The word has been added to your deck!',
+                        'Success',
+                        'success'
+                      )
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    // adds preexisting DB word if the user clicks agree in the modal
+    // the modal appears if the submit button is clicked, and checkDataBaseForWord() axios request returns a response (finds the word)
+    handleAddExistingWord = () => {
+        this.props.dispatch({ type: 'ADD_EXISTING_WORD_TO_SET', payload: {
+            word_id: this.state.preexistingWordId,
+            set_id: this.props.match.params.setId
+            } 
+        })
+        this.handleClose();
+    }
+
+    handleClose = () => {
+        this.setState({ open: false });
+      };
 
     handleInput = (event) => {
         this.setState({
@@ -27,45 +87,6 @@ class AddWord extends Component {
         })
     }
 
-    handleClose = () => {
-        this.setState({ open: false });
-      };
-
-    checkDataBaseForWord = () => {
-        // Runs axios request to server to check for match of searched word, runs modal if match is found
-        console.log('in checkDataBaseForWord');
-        axios({
-            method: 'GET',
-            url: `/api/translate/checkDB/en/${this.props.newWord.translateFromReducer}`
-        })
-            .then(response => {
-                // if response from database is conclusive, sets local state open property to true, 
-                //which renders a dialog to prompt user to use the preexisting word in their card set
-                if (response.data[0]) { 
-                    this.setState({
-                        open: true
-                    })
-                }
-                else {
-                    // sends current translation results to SAGA, to make new word row in DB and add to card set.
-                    console.log(this.props.newWord);
-                    this.props.dispatch({type: 'ADD_NEW_WORD_TO_SET', payload: {
-                        original_word: this.props.newWord.translateFromReducer,
-                        translation: this.props.newWord.translationReducer,
-                        image: this.props.newWord.imagesReducer[0].largeImageURL
-                        }
-                    })
-                    Swal.fire(
-                        'The word has been added to your deck!',
-                        'Success',
-                        'success'
-                      )
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
 
     render() {
         return (
@@ -135,13 +156,13 @@ class AddWord extends Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            Disagree
+                        <Button onClick={this.handleAddExistingWord} color="primary">
+                            Agree
                         </Button>
                         {/* Pressing agree should add the preexisting word to the card set, 
                         Post request to cards_words junction table */}
                         <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Agree
+                            Disagree
                         </Button>
                     </DialogActions>
                 </Dialog>

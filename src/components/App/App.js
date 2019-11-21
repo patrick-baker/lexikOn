@@ -4,6 +4,7 @@ import {
   Route,
   Redirect,
   Switch,
+  useParams
 } from 'react-router-dom';
 
 import {connect} from 'react-redux';
@@ -19,6 +20,7 @@ import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 import UserCardSets from '../UserCardSets/UserCardSets';
 import InverseUserCardSets from '../InverseUserCardSets/InverseUserCardSets';
+import WordsList from '../WordsList/WordsList';
 
 import './App.css';
 
@@ -62,7 +64,7 @@ class App extends Component {
             />
             <ProtectedRoute
               exact
-              path="/add-word"
+              path="/add-word/:setId"
               component={AddWord}
             />
             <ProtectedRoute
@@ -75,11 +77,16 @@ class App extends Component {
               path="/inverse-card-sets"
               component={InverseUserCardSets}
             />
+            <ProtectedRoute
+              exact
+              path="/card-set-words/:id"
+              component={WordsList}
+            />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />
           </Switch>
           <Footer />
-          {/* <pre>{JSON.stringify(this.props, 2, null)}</pre> */}
+          {/* <pre>{JSON.stringify(this.props)}</pre> */}
         </div>
       </Router>
   )}

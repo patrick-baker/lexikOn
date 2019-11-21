@@ -9,17 +9,46 @@ router.get('/', (req, res) => {
     
 });
 
-// need Posts to words_in_sets on submit in AddWord.js
-// both for new words and words that already exist in the DB
+// posts preexisting word to chosen card_set, which is stored in add card page as
+// match route param from card set list
+router.post('/existingWord', (req, res) => {
+    console.log('in addWord/existingWord post route, req.body:', req.body);
+    const queryText=`INSERT INTO "words_in_sets" ("word_id", "set_id")
+        VALUES ($1, $2);`;
+        pool.query(queryText, [req.body.word_id, req.body.set_id])
+        .then(() => {
+            console.log('successful POST of existing word to words_in_sets');
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            console.log('error in POST to words_in_sets from existing word POST', err);
+            res.sendStatus(500);
+        })
+})
 
 // needs authorization
 // posts new word to database from AddWord form
+// also posts that word to the words_in_set, using set_id sent in req.body
 router.post('/newWord', (req, res) => {
     console.log('in addWord/newWord post route, req.body:', req.body);
-    const queryText = `INSERT INTO "words" ("english_entry", "russian_entry", "image_url") VALUES ($1, $2, $3);`;
+    const queryText = `INSERT INTO "words" ("english_entry", "russian_entry", "image_url") 
+    VALUES ($1, $2, $3) RETURNING id;`;
     pool.query(queryText, [req.body.original_word, req.body.translation, req.body.image])
-    .then(() => {
-        res.sendStatus(200);
+    .then((results) => {
+        console.log('results in /newWord:', results);
+        const newWordid = results.rows[0].id;
+        console.log('newWordid:', newWordid);
+        const queryText=`INSERT INTO "words_in_sets" ("word_id", "set_id")
+        VALUES ($1, $2);`;
+        pool.query(queryText, [newWordid, req.body.set_id])
+        .then(() => {
+            console.log('successful POST of new word and words_in_sets');
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            console.log('error in POST to words_in_sets from new word POST', err);
+            res.sendStatus(500);
+        })
     })
     .catch(err => {
         console.log('error in addWord/newWord post request', err);

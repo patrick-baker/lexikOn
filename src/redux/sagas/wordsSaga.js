@@ -5,7 +5,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 function* fetchCardSetWordsSaga(action) {
     try {
         // runs the search through the server, with action.payload as the set-id
-        console.log(action.payload);
+        console.log('in fetchCardSetWordsSaga, set id:', action.payload);
         const receivedWords = yield axios.get(`/api/words/cardSet/${action.payload}`);
         console.log(receivedWords);
         // sends the array of retrieved words to the cardSetWordsReducer in wordsReducer.js
