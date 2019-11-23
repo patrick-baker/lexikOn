@@ -4,7 +4,8 @@ import {
   Route,
   Redirect,
   Switch,
-  useParams
+  useParams,
+  Link
 } from 'react-router-dom';
 
 import {connect} from 'react-redux';
@@ -35,7 +36,12 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Nav />
+        {this.props.user.id &&
+        <div className="nav-title">
+          <Link to="/home">
+            <h2>lexikOn</h2>
+          </Link>
+        </div>}
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
@@ -86,6 +92,7 @@ class App extends Component {
             <Route render={() => <h1>404</h1>} />
           </Switch>
           <Footer />
+          <Nav />
           {/* <pre>{JSON.stringify(this.props)}</pre> */}
         </div>
       </Router>

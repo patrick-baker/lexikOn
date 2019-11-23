@@ -18,6 +18,15 @@ class AddWord extends Component {
         console.log('in add word component, this.props.match.params.setId', this.props.match.params.setId);
     }
 
+    componentWillUnmount() {
+        this.setState({
+            keyword: '',
+            imageToShow: '',
+            open: false,
+            preexistingWordId: '',
+        })
+    }
+
     checkDataBaseForWord = () => {
         // Runs axios request to server to check for match of searched word, runs modal if match is found
         console.log('in checkDataBaseForWord');
@@ -33,7 +42,6 @@ class AddWord extends Component {
                     this.setState({
                         open: true,
                         preexistingWordId: response.data[0].id
-
                     })
                 }
                 else {

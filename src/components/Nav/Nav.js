@@ -9,12 +9,6 @@ import './Nav.css';
 
 const Nav = (props) => (
   <div className="nav">
-    {props.user.id &&
-    <div className="nav-title">
-    <Link to="/home">
-      <h2>lexikOn</h2>
-    </Link>
-    </div>}
     <div className="nav-icons">
       <Link className="nav-link" to="/home">
         {/* Show this link if they are logged in or not,

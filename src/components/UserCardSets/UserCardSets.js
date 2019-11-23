@@ -29,6 +29,12 @@ class UserCardSets extends Component {
         newCardSetInput: '' // input value for adding a new card set
     }
 
+    componentDidMount() {
+        this.setState({
+            newCardMode: false, // enter correct home screen when home button is pressed
+        })
+    }
+
     handleDialogClose = () => {
         this.setState({ open: false }); // removes modal when user clicks off of it
     };

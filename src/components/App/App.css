@@ -1,3 +1,31 @@
+.bg { /* Background image on login and registration page */
+    position: fixed;
+    top: -50%; 
+    left: -50%; 
+    width: 200%; 
+    height: 200%;
+    background: url(/nikolay-vorobyev-QJ2HGuSSQz0-unsplash.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow: hidden;
+    opacity: .15;
+    z-index: -1;
+  }
+
+.center-container {
+    text-align: center;
+    margin-top: 40%;
+    margin-bottom: 15%;
+}
+
+.title {
+    font-family: 'Russo One', sans-serif;
+    font-size: 300%;
+    color: blue;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0px;
@@ -9,12 +37,15 @@ body {
 }
 
 form {
-    background-color: #dbd5d5;
-    width: 30%;
-    height: 250px;
+    width: 50%;
+    height: 25vh;
     margin: 20px auto;
     padding: 25px;
-    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+
 }
 
 input {
@@ -32,10 +63,6 @@ input {
   cursor: pointer;
 }
 
-.log-in:hover, .log-out:hover, .register:hover {
-  background-color: #008183;
-}
-
 /* This line makes the "Register" and "Login" buttons look like links */
 .link-button {
     background:none;
@@ -47,3 +74,14 @@ input {
     border-bottom:1px solid #444; 
     cursor: pointer;
 }
+
+.nav-title {
+    text-align: center;
+  }
+  
+  .nav-title h2 {
+      font-size: 24px;
+      font-weight: 700;
+      display: inline-block;
+      color: black;
+  }

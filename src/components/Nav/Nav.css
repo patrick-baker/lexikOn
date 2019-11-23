@@ -1,17 +1,9 @@
-.nav-title {
-  text-align: center;
-}
-
-.nav-title h2 {
-    font-size: 24px;
-    font-weight: 700;
-    display: inline-block;
-    color: #f2f2f2;
-}
-
 .nav {
   overflow: hidden;
   background-color: #00acb0;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
 }
 
 .nav-link {
@@ -35,6 +27,8 @@
 }
 
 .nav-icons {
+  display: flex;
+  justify-content: space-evenly;
   display: flex;
   justify-content: space-evenly;
 }
