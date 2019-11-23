@@ -1,11 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Container, Button} from '@material-ui/core';
+import {GridList, GridListTile, GridListTileBar, ListSubheader, IconButton} from '@material-ui/core';
+// import InfoIcon from '@material-ui/icons/Info';
 import { styled } from '@material-ui/core/styles';
 
-const ListContainer = styled(Container) ({
-
+const WordsListContainer = styled(Container) ({
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    // backgroundColor: theme.palette.background.paper
 });
+
+const WordsGridList = styled(GridList) ({
+    width: 500,
+    height: 450,
+});
+
+// const WordsIconButton = styled(IconButton) ({
+//     color: 'rgba(255, 255, 255, 0.54)'
+// })
 
 class WordsList extends Component {
     // the title of the chosen card set
@@ -16,6 +31,7 @@ class WordsList extends Component {
     componentDidMount() {
         const setId = this.props.match.params.id;
         this.props.dispatch({type:'FETCH_CARD_SET_WORDS', payload: setId})
+        console.log('count');
     }
 
     // allows the set creator to edit it, and prevents all others from doing so
@@ -35,12 +51,32 @@ class WordsList extends Component {
 
     render() {
         return (
-            <>
+            <div style={{textAlign: "center"}}>
                 {/* Puts the card set title on the screen */}
                 <h1 onClick={() => this.handleAddWordToCardSet(this.props.match.params.id)}>{this.props.words.cardSetWordsReducer[0] && this.props.words.cardSetWordsReducer[0].set_name}</h1>
-                {/* Maps through the cardSetWordsReducer to display the words on the screen. */}
-                {this.props.words.cardSetWordsReducer.map(word => <div><h3>{word.english_entry}</h3></div>)}
-            </>
+                {/* Maps through the cardSetWordsReducer to display the words on the screen. */} 
+                <WordsListContainer>
+                <WordsGridList cellHeight={180}>
+                  {/* <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+                    <ListSubheader component="div">December</ListSubheader>
+                  </GridListTile> */}
+                  {this.props.words.cardSetWordsReducer.map(word => (
+                    <GridListTile key={word.word_id}>
+                      <img src={word.image_url} alt={word.english_entry} />
+                      <GridListTileBar
+                        title={word.english_entry}
+                        subtitle={word.russian_entry}
+                        // actionIcon={
+                        //   <WordsIconButton aria-label={`info about ${word.english_entry}`}>
+                        //     <InfoIcon />
+                        //   </WordsIconButton>
+                        // }
+                      />
+                    </GridListTile>
+                  ))}
+                </WordsGridList>
+              </WordsListContainer>
+            </div>
         )
     }
 }

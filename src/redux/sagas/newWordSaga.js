@@ -7,9 +7,9 @@ function* fetchImageSaga(action) {
         // runs the search through the server, with action.payload as the searched word
         console.log(action.payload);
         const receivedImages = yield axios.get(`/api/image/${action.payload}`);
-        console.log(receivedImages.data.hits);
+        console.log(receivedImages.data);
         // sends the array of retrieved images to the imagesReducer in newWordReducer.js
-        yield put({ type: 'GET_IMAGES', payload: receivedImages.data.hits });
+        yield put({ type: 'GET_IMAGES', payload: receivedImages.data});
     } catch (error) {
         console.log('error fetching image', error);
     }

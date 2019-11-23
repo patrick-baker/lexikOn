@@ -42,7 +42,8 @@ class AddWord extends Component {
                     this.props.dispatch({type: 'ADD_NEW_WORD_TO_SET', payload: {
                         original_word: this.props.newWord.translateFromReducer,
                         translation: this.props.newWord.translationReducer,
-                        image: this.props.newWord.imagesReducer[0].largeImageURL,
+                        image: this.props.newWord.imagesReducer[0].urls.regular,
+                        imageAuthor: this.props.newWord.imagesReducer[0].user.name,
                         set_id: this.props.match.params.setId
                         }
                     })
@@ -131,7 +132,7 @@ class AddWord extends Component {
                         </CardContent>
                         {this.props.newWord.imagesReducer[0] && <CardMedia
                             title={this.props.newWord.translateFromReducer}
-                            src={this.props.newWord.imagesReducer[0].largeImageURL}
+                            src={this.props.newWord.imagesReducer[0].urls.regular}
                             // Math.floor(Math.random() * this.props.imagesReducer.length) //function to find random image for translation
                             className="add-word-image"
                             component="img"

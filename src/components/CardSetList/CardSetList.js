@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Container, Button} from '@material-ui/core';
+import {Container, Button, Paper, Grid} from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import {withRouter} from 'react-router-dom';
 
 const ListContainer = styled(Container) ({
-
+    flexGrow: 1,
 });
+
+const CardListGridItem = styled(Grid) ({
+})
+
+const CardListPaper = styled(Paper) ({
+    textAlign: 'center',
+    maxWidth: 500,
+    padding: 20,
+})
+
+
 
 class CardSetList extends Component {
 
@@ -22,21 +33,36 @@ class CardSetList extends Component {
     render() {
         return (
             <>
-                {this.props.listType === 'userSets' && this.props.cardSets.userCardSetsReducer[0] && // renders users card sets on cardSets page
+                {/* renders users card sets on cardSets page */}
+                {this.props.listType === 'userSets' && this.props.cardSets.userCardSetsReducer[0] && 
                 <ListContainer maxWidth="lg">
-                {this.props.cardSets.userCardSetsReducer.map(set => 
-                    <p key={set.id} 
-                    // Brings the user to the word list page of the chosen card set
-                    onClick={() => this.handleDisplayCardSetWords(set.id)}
-                    >{set.name}</p>)}
+                    <Grid container spacing={3} style={{marginTop: 20}}>
+                        {this.props.cardSets.userCardSetsReducer.map(set => 
+                            <CardListGridItem item xs={12} key={set.id} height="20%">
+                                <CardListPaper 
+                                // Brings the user to the word list page of the chosen card set
+                                onClick={() => this.handleDisplayCardSetWords(set.id)}
+                                >{set.name}
+                                {/* <ArrowForwardIcon></ArrowForwardIcon> */}
+                                </CardListPaper>
+                            </CardListGridItem>
+                        )}
+                    </Grid>
                 </ListContainer>}
-                {this.props.listType === 'inverseUserSets' && this.props.cardSets.inverseUserCardSetsReducer[0] && // renders users card sets on cardSets page
+                {/* renders users card sets on cardSets page */}
+                {this.props.listType === 'inverseUserSets' && this.props.cardSets.inverseUserCardSetsReducer[0] && 
                 <ListContainer maxWidth="lg">
-                {this.props.cardSets.inverseUserCardSetsReducer.map(set => 
-                    <p key={set.id}
-                    // Adds this card set to the user's repertoire
-                    onClick={() => this.handleAddExistingCardSet(set.id)}
-                    >{set.name}</p>)}
+                    <Grid container spacing={3} style={{marginTop: 20}}>
+                        {this.props.cardSets.inverseUserCardSetsReducer.map(set =>
+                            <CardListGridItem item xs={12} key={set.id}>
+                                <CardListPaper
+                                // Brings the user to the word list page of the chosen card set
+                                onClick={() => this.handleAddExistingCardSet(set.id)}
+                                >{set.name}
+                                </CardListPaper>
+                            </CardListGridItem>
+                        )}
+                    </Grid> 
                 </ListContainer>}
             </>
         )

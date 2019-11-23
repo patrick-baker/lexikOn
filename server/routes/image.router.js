@@ -5,21 +5,20 @@ const axios = require('axios');
 
 
 const router = express.Router();
-// query giphy API
+// query Unsplash API
 router.get('/:search', (req, res) => {
     console.log(req.params);
     axios({
         method: 'GET',
-        url: 'https://pixabay.com/api/',
+        url: 'https://api.unsplash.com/search/photos/',
         params: {
-            key: process.env.PIXABAY_API_KEY,
-            q: req.params.search,
-            orientation: 'vertical',
-            order: 'popular'
+            client_id: process.env.UNSPLASH_API_ACCESS_KEY,
+            query: req.params.search,
+            orientation: 'portrait',
         }
     }).then( (result) => {
-        res.send(result.data);
-        console.log(result.data);
+        res.send(result.data.results);
+        console.log(result.data.results);
     })
     .catch(error => {
         console.log('error in api GETTER', error);
