@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Button } from '@material-ui/core';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
 import { styled } from '@material-ui/core/styles';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import CancelIcon from '@material-ui/icons/Cancel';
 import CardSetList from '../CardSetList/CardSetList';
 import './UserCardSets.css';
 import Swal from 'sweetalert2';
@@ -72,8 +74,10 @@ class UserCardSets extends Component {
             <>
                 {/* Conditional rendering of add and delete card set buttons if add new card mode is false */}
                 {this.state.newCardMode === false && <div className="button-container"> 
-                    <AddSetButton onClick={() => this.setState({open: true})}>+</AddSetButton>
-                    <DeleteSetButton>x</DeleteSetButton>
+                    <AddCircleOutlineIcon onClick={() => this.setState({open: true})} fontSize='large' color='primary'></AddCircleOutlineIcon>
+                    {/* <AddSetButton onClick={() => this.setState({open: true})}>+</AddSetButton> */}
+                    <CancelIcon fontSize='large' color='secondary'></CancelIcon>
+                    {/* <DeleteSetButton>x</DeleteSetButton> */}
                 </div>}
                 {/* Conditional rendering of input for new card set name */}
                 {this.state.newCardMode === true && <div>

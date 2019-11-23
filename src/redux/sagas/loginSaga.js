@@ -20,6 +20,10 @@ function* loginUser(action) {
     // after the user has logged in
     // get the user information from the server
     yield put({type: 'FETCH_USER'});
+    // fetches card sets for this user, to show on card sets page
+    yield put({type: 'FETCH_USER_CARD_SETS'});
+    // fetches all card sets that this user does not have in repertoire, to show on card sets to add page
+    yield put({type: 'FETCH_INVERSE_USER_CARD_SETS'});
   } catch (error) {
     console.log('Error with user login:', error);
     if (error.response.status === 401) {

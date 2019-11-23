@@ -31,6 +31,7 @@ class WordsList extends Component {
     componentDidMount() {
         const setId = this.props.match.params.id;
         this.props.dispatch({type:'FETCH_CARD_SET_WORDS', payload: setId})
+        console.log('count');
     }
 
     // allows the set creator to edit it, and prevents all others from doing so

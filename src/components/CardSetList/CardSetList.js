@@ -8,8 +8,13 @@ const ListContainer = styled(Container) ({
     flexGrow: 1,
 });
 
+const CardListGridItem = styled(Grid) ({
+})
+
 const CardListPaper = styled(Paper) ({
     textAlign: 'center',
+    maxWidth: 500,
+    padding: 20,
 })
 
 
@@ -31,30 +36,31 @@ class CardSetList extends Component {
                 {/* renders users card sets on cardSets page */}
                 {this.props.listType === 'userSets' && this.props.cardSets.userCardSetsReducer[0] && 
                 <ListContainer maxWidth="lg">
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} style={{marginTop: 20}}>
                         {this.props.cardSets.userCardSetsReducer.map(set => 
-                            <Grid item xs={12}>
-                                <CardListPaper key={set.id} 
+                            <CardListGridItem item xs={12} key={set.id} height="20%">
+                                <CardListPaper 
                                 // Brings the user to the word list page of the chosen card set
                                 onClick={() => this.handleDisplayCardSetWords(set.id)}
                                 >{set.name}
+                                {/* <ArrowForwardIcon></ArrowForwardIcon> */}
                                 </CardListPaper>
-                            </Grid>
+                            </CardListGridItem>
                         )}
                     </Grid>
                 </ListContainer>}
                 {/* renders users card sets on cardSets page */}
                 {this.props.listType === 'inverseUserSets' && this.props.cardSets.inverseUserCardSetsReducer[0] && 
                 <ListContainer maxWidth="lg">
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} style={{marginTop: 20}}>
                         {this.props.cardSets.inverseUserCardSetsReducer.map(set =>
-                            <Grid item xs={12}>
-                                <CardListPaper key={set.id} 
+                            <CardListGridItem item xs={12} key={set.id}>
+                                <CardListPaper
                                 // Brings the user to the word list page of the chosen card set
                                 onClick={() => this.handleAddExistingCardSet(set.id)}
                                 >{set.name}
                                 </CardListPaper>
-                            </Grid>
+                            </CardListGridItem>
                         )}
                     </Grid> 
                 </ListContainer>}

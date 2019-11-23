@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 
 const LogOutButton = props => (
   <button
@@ -9,7 +10,7 @@ const LogOutButton = props => (
     className={props.className}
     onClick={() => props.dispatch({ type: 'LOGOUT' })}
   >
-    Log Out
+    <ExitToAppRoundedIcon></ExitToAppRoundedIcon>
   </button>
 );
 
