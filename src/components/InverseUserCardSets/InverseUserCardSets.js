@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 import CardSetList from '../CardSetList/CardSetList';
 
 class inverseUserCardSets extends Component {

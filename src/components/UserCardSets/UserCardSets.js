@@ -2,24 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button } from '@material-ui/core';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
-import { styled } from '@material-ui/core/styles';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import CancelIcon from '@material-ui/icons/Cancel';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 import CardSetList from '../CardSetList/CardSetList';
 import './UserCardSets.css';
 import Swal from 'sweetalert2';
-
-const AddSetButton = styled(Button)({ // brings user to screen to add a new card set
-    backgroundColor: 'green',
-    borderRadius: 200,
-    fontSize: 30,
-});
-
-const DeleteSetButton = styled(Button)({
-    backgroundColor: 'red',
-    borderRadius: 200,
-    fontSize: 30,
-})
 
 class UserCardSets extends Component {
 
@@ -80,18 +68,23 @@ class UserCardSets extends Component {
             <>
                 {/* Conditional rendering of add and delete card set buttons if add new card mode is false */}
                 {this.state.newCardMode === false && <div className="button-container"> 
-                    <AddCircleOutlineIcon onClick={() => this.setState({open: true})} fontSize='large' color='primary'></AddCircleOutlineIcon>
-                    {/* <AddSetButton onClick={() => this.setState({open: true})}>+</AddSetButton> */}
-                    <CancelIcon fontSize='large' color='secondary'></CancelIcon>
-                    {/* <DeleteSetButton>x</DeleteSetButton> */}
-                </div>}
-                {/* Conditional rendering of input for new card set name */}
-                {this.state.newCardMode === true && <div>
-                    <input onChange={(event) => this.handleNewCardSetChange(event)} placeholder="add new card set name"></input> 
-                    <Button onClick={() => this.handleSubmitNewSet()}>Submit</Button> 
+                    {/* <AddCircleOutlineIcon onClick={() => this.setState({open: true})} fontSize='large' color='primary'></AddCircleOutlineIcon> */}
+                    <Fab color="primary" aria-label="add set" onClick={() => this.setState({open: true})}>
+                        <AddIcon />
+                    </Fab>
+                    <Fab color="secondary" aria-label="delete set">
+                        <DeleteIcon />
+                    </Fab>
                 </div>}
                 {/* Card set list component for showing card set list on page */}
-                <CardSetList listType="userSets"/>
+                <CardSetList 
+                listType="userSets" 
+                //below props sent down to render input and submit for adding a new card set
+                newCardMode={this.state.newCardMode}
+                newCardSetInput={this.state.newCardSetInput}
+                handleNewCardSetChange = {this.handleNewCardSetChange}
+                handleSubmitNewSet={this.handleSubmitNewSet}
+                />
                 {/* Modal dialog that shows when user presses the add new card button */}
                 <Dialog
                     open={this.state.open}

@@ -134,7 +134,7 @@ class AddWord extends Component {
                             <Typography gutterBottom color="textSecondary" variant="h5" component="h2">
                                 Original Word: {this.props.newWord.translateFromReducer}
                             </Typography>
-                            <Typography variant="body2" variant="h5" component="p">
+                            <Typography variant="h5" component="p">
                                 Translation: {this.props.newWord.translationReducer}
                             </Typography>
                         </CardContent>
@@ -149,7 +149,7 @@ class AddWord extends Component {
                     </CardActionArea>
                 </Card>
                 <Button size="small" color="primary" variant="outlined" onClick={this.checkDataBaseForWord}>
-                    Submit
+                    Add Word
                     </Button>
                 <Dialog
                     open={this.state.open}
@@ -175,7 +175,7 @@ class AddWord extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <pre>{JSON.stringify(this.state, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
             </div>
         )
     }

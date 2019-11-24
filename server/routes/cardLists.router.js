@@ -12,7 +12,8 @@ router.get('/userLists', rejectUnauthenticated, (req, res) => {
     const queryText=`SELECT "card_sets"."id", "card_sets"."name", "card_sets"."creator_user_id" FROM "user" 
     JOIN "user_sets" ON "user"."id" = "user_sets"."user_id"
     JOIN "card_sets" ON "user_sets"."set_id" = "card_sets"."id"
-    WHERE "user"."id" = $1;`;
+    WHERE "user"."id" = $1
+    ORDER BY "card_sets"."name";`;
     pool.query(queryText, [req.user.id])
     .then((results) => {
         console.log('results from /api/cardLists/userLists request:', results.rows);

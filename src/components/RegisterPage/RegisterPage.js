@@ -36,8 +36,8 @@ class RegisterPage extends Component {
   render() {
     return (
       <>
+        {/* Responsible for the background image */}
         <div className="bg">
-          {/* <img src="/nikolay-vorobyev-jaH3QF46gAY-unsplash.jpg" alt="" /> */}
         </div>
         {this.props.errors.registrationMessage && (
           <h2

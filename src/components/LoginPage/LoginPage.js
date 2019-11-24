@@ -36,8 +36,8 @@ class LoginPage extends Component {
   render() {
     return (
       <>
+        {/* Responsible for the background image */}
         <div className="bg">
-          {/* <img src="/nikolay-vorobyev-jaH3QF46gAY-unsplash.jpg" alt="" /> */}
         </div>
         {this.props.errors.loginMessage && (
           <h2
@@ -103,14 +103,13 @@ class LoginPage extends Component {
           </div>
         </form>
         <center>
-          <h6>Don't have a lexikOn account?</h6>
-          <button
-            type="button"
-            className="link-button"
+          <p>Don't have a LexikOn account?</p>
+          <br/>
+          <h6
             onClick={() => { this.props.dispatch({ type: 'SET_TO_REGISTER_MODE' }) }}
           >
             Register here
-          </button>
+          </h6>
         </center>
       </>
     );

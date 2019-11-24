@@ -4,7 +4,6 @@ import {
   Route,
   Redirect,
   Switch,
-  useParams,
   Link
 } from 'react-router-dom';
 
@@ -37,9 +36,9 @@ class App extends Component {
       <Router>
         <div>
         {this.props.user.id &&
-        <div className="nav-title">
-          <Link to="/home">
-            <h2>lexikOn</h2>
+        <div className="top-title">
+          <Link to="/home" style={{textDecoration: 'none'}}>
+            <h1 className="title">lexikOn</h1>
           </Link>
         </div>}
           <Switch>

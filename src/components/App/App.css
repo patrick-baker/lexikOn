@@ -75,8 +75,10 @@ input {
     cursor: pointer;
 }
 
-.nav-title {
+.top-title {
     text-align: center;
+    margin-top: 3vh;
+    text-decoration: none;
   }
   
   .nav-title h2 {
