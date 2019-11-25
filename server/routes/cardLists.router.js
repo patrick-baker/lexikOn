@@ -36,7 +36,7 @@ router.get('/inverseUserLists', rejectUnauthenticated, (req, res) => {
        WHERE "user"."id" = $1);`;
     pool.query(queryText, [req.user.id])
     .then((results) => {
-        console.log('results from /api/cardLists/userLists request:', results.rows);
+        console.log('results from /api/cardLists/inverseUserLists request:', results.rows);
         res.send(results.rows);
     })
     .catch((err) => {
@@ -74,6 +74,7 @@ router.post('/newCardSet', rejectUnauthenticated, (req,res) => {
     })
 })
 
+// adds an existing card set to a user's repertoire
 router.post('/addExistingCardSet', rejectUnauthenticated, (req, res) => {
     console.log('req.user', req.user);
     console.log('req.body:', req.body);
@@ -86,6 +87,22 @@ router.post('/addExistingCardSet', rejectUnauthenticated, (req, res) => {
     })
     .catch(err => {
         console.log('error in addExistingCardSet:', err)
+        res.sendStatus(500);
+    })
+})
+
+// removes card set from user's repertoire
+router.delete('/removeCardSet/:setId', (req, res) => {
+    console.log('in card set removal', req.params);
+    const queryText=`DELETE FROM "user_sets" 
+    WHERE "user_id" = $1 AND "set_id" = $2;`;
+    pool.query(queryText, [req.user.id, req.params.setId])
+    .then(() => {
+        console.log('in removeCardSet query');
+        res.sendStatus(200);
+    })
+    .catch((err) => {
+        console.log('error in removeCardSet query', err);
         res.sendStatus(500);
     })
 })

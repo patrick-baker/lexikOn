@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import {Container, Button, Paper, Grid, TextField} from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import {withRouter} from 'react-router-dom';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import './CardSetList.css';
 
 const ListContainer = styled(Container) ({
@@ -15,7 +17,7 @@ const CardListGridItem = styled(Grid) ({
 const CardListPaper = styled(Paper) ({
     textAlign: 'center',
     maxWidth: 500,
-    padding: 20,
+    padding: 15,
     backgroundColor: '#f7f7f7',
     color: '#26408B'
 })
@@ -29,8 +31,12 @@ class CardSetList extends Component {
         this.props.dispatch({type: 'POST_ADD_EXISTING_CARD_SET_TO_REPERTOIRE', payload: setId});
     }
 
-    handleDisplayCardSetWords = (id) => {
-        this.props.history.push(`/card-set-words/${id}`);
+    handleDisplayCardSetWords = (setId) => {
+        this.props.history.push(`/card-set-words/${setId}`);
+    }
+
+    handleRemoveCardSet = (setId) => {
+        this.props.dispatch({type: 'REMOVE_CARD_SET_FROM_REPERTOIRE', payload: setId})
     }
 
     render() {
@@ -61,12 +67,21 @@ class CardSetList extends Component {
                             </CardListPaper>
                         </CardListGridItem>}
                         {this.props.listType === 'userSets' && this.props.cardSets.userCardSetsReducer[0] && 
-                        this.props.cardSets.userCardSetsReducer.map(set => 
+                        this.props.cardSets.userCardSetsReducer.map(set =>
                             <CardListGridItem item xs={12} key={set.id}>
-                                <CardListPaper 
-                                // Brings the user to the word list page of the chosen card set
-                                onClick={() => this.handleDisplayCardSetWords(set.id)}
-                                >{set.name}
+                                <CardListPaper> 
+                                {/* // Brings the user to the word list page of the chosen card set */}
+                                <div className="flex-container">
+                                    <div onClick={() => this.handleDisplayCardSetWords(set.id)} style={{width: '85%'}}>
+                                        {set.name}
+                                    </div>
+                                    {this.props.editMode && 
+                                        <div className="flex-container" style={{width: '15%', justifyContent: 'space-between'}}>
+                                            <EditRoundedIcon />
+                                            <DeleteRoundedIcon onClick={() => this.handleRemoveCardSet(set.id)}/>
+                                        </div>
+                                    }
+                                </div>
                                 </CardListPaper>
                             </CardListGridItem>
                         )}

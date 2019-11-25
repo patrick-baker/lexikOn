@@ -41,11 +41,19 @@ function* postAddExistingCardSet(action) {
     yield put ({type: 'FETCH_INVERSE_USER_CARD_SETS'});
 }
 
+function* removeUserCardSet (action) {
+    console.log('in removeUserCardSet, card set id', action.payload);
+    yield axios.delete(`/api/cardLists/removeCardSet/${action.payload}`);
+    yield put ({type: 'FETCH_USER_CARD_SETS'});
+    yield put ({type: 'FETCH_INVERSE_USER_CARD_SETS'});
+}
+
 function* cardSetsSaga() {
     yield takeLatest('FETCH_USER_CARD_SETS', fetchUserCardSets);
     yield takeLatest('FETCH_INVERSE_USER_CARD_SETS', fetchInverseUserCardSets);
     yield takeLatest('POST_NEW_CARD_SET', postNewCardSet);
     yield takeLatest('POST_ADD_EXISTING_CARD_SET_TO_REPERTOIRE', postAddExistingCardSet);
+    yield takeLatest('REMOVE_CARD_SET_FROM_REPERTOIRE', removeUserCardSet)
 }
 
 export default cardSetsSaga;

@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import CardSetList from '../CardSetList/CardSetList';
 import './UserCardSets.css';
 import Swal from 'sweetalert2';
@@ -14,7 +14,8 @@ class UserCardSets extends Component {
     state = {
         open: false, // local state for modal, upon add new card set click
         newCardMode: false, // switches to add new card set mode when true
-        newCardSetInput: '' // input value for adding a new card set
+        newCardSetInput: '', // input value for adding a new card set
+        editMode: false
     }
 
     componentDidMount() {
@@ -63,17 +64,26 @@ class UserCardSets extends Component {
         }
     // }
 
+    toggleEditMode = () => {
+        this.state.editMode ? 
+        this.setState ({
+            editMode: false
+        }) :
+        this.setState({
+            editMode: true
+        })
+    }
+
     render() {
         return (
             <div>
                 {/* Conditional rendering of add and delete card set buttons if add new card mode is false */}
                 {this.state.newCardMode === false && <div className="button-container"> 
-                    {/* <AddCircleOutlineIcon onClick={() => this.setState({open: true})} fontSize='large' color='primary'></AddCircleOutlineIcon> */}
                     <Fab color="primary" aria-label="add set" onClick={() => this.setState({open: true})}>
                         <AddIcon />
                     </Fab>
                     <Fab color="secondary" aria-label="delete set">
-                        <DeleteIcon />
+                        <EditIcon style={{color: 'white'}} onClick={() => this.toggleEditMode()}/>
                     </Fab>
                 </div>}
                 {/* Card set list component for showing card set list on page */}
@@ -84,6 +94,7 @@ class UserCardSets extends Component {
                 newCardSetInput={this.state.newCardSetInput}
                 handleNewCardSetChange = {this.handleNewCardSetChange}
                 handleSubmitNewSet={this.handleSubmitNewSet}
+                editMode={this.state.editMode}
                 />
                 {/* Modal dialog that shows when user presses the add new card button */}
                 <Dialog
@@ -92,7 +103,7 @@ class UserCardSets extends Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{"Use Pre-existing word?"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{"Add a new Card Set!"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Would you like to use a pre-existing card set?
