@@ -33,7 +33,8 @@ router.get('/inverseUserLists', rejectUnauthenticated, (req, res) => {
     SELECT "card_sets"."id" FROM "user" 
        JOIN "user_sets" ON "user"."id" = "user_sets"."user_id"
        JOIN "card_sets" ON "user_sets"."set_id" = "card_sets"."id"
-       WHERE "user"."id" = $1);`;
+       WHERE "user"."id" = $1)
+       ORDER BY "card_sets"."name";`;
     pool.query(queryText, [req.user.id])
     .then((results) => {
         console.log('results from /api/cardLists/inverseUserLists request:', results.rows);
@@ -87,6 +88,22 @@ router.post('/addExistingCardSet', rejectUnauthenticated, (req, res) => {
     })
     .catch(err => {
         console.log('error in addExistingCardSet:', err)
+        res.sendStatus(500);
+    })
+})
+
+router.put('/updateCardSetName', (req, res) => {
+    console.log('in card set name update', req.body);
+    const queryText=`UPDATE "card_sets" 
+    SET "name" = $1
+    WHERE "id" = $2;`;
+    pool.query(queryText, [req.body.setName, req.body.setId])
+    .then(() => {
+        console.log('in updateCardSetName query');
+        res.sendStatus(200);
+    })
+    .catch(err => {
+        console.log('error in updateCardSetName query', err);
         res.sendStatus(500);
     })
 })
