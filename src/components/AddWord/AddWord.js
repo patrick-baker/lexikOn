@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardActionArea, CardContent, CardMedia, Button, Typography, TextField, Radio, RadioGroup, FormControlLabel } from '@material-ui/core'; // components for newWordCard contents
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TranslateRoundedIcon from '@material-ui/icons/TranslateRounded';
 import './AddWord.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -19,12 +21,9 @@ class AddWord extends Component {
     }
 
     componentWillUnmount() {
-        this.setState({
-            keyword: '',
-            imageToShow: '',
-            open: false,
-            preexistingWordId: '',
-        })
+        this.props.dispatch({ type: 'GET_TRANSLATION', payload: '' });
+        this.props.dispatch({ type: 'GET_IMAGES', payload: [] });
+        this.props.dispatch({ type: 'TRANSLATE_FROM', payload: ''});
     }
 
     checkDataBaseForWord = () => {
@@ -115,6 +114,13 @@ class AddWord extends Component {
                                     onChange={this.handleInput}
                                     color="primary"
                                     style={{maxWidth: '150px'}}
+                                    InputProps={{
+                                        startAdornment: (
+                                          <InputAdornment position="start">
+                                            <TranslateRoundedIcon fontSize="small"/>
+                                          </InputAdornment>
+                                        )
+                                      }}
                                 />
                                 <Button variant="outlined" color="primary" onClick={this.handleSearch}>SEARCH</Button>
                                 <RadioGroup aria-label="language-choice" name="language-choice" row>
