@@ -15,31 +15,18 @@ const Nav = (props) => (
         but call this link 'Home' if they are logged in,
         and call this link 'Login / Register' if they are not */}
         {props.user.id ?
-        <HomeRoundedIcon></HomeRoundedIcon> : 
-        <LaunchRoundedIcon></LaunchRoundedIcon>}
+        <HomeRoundedIcon fontSize="large"></HomeRoundedIcon> : 
+        <LaunchRoundedIcon fontSize="large"></LaunchRoundedIcon>}
       </Link>
       {/* Always show this link since the about page is not protected */}
       <Link className="nav-link" to="/about">
-          <InfoRoundedIcon></InfoRoundedIcon>
+          <InfoRoundedIcon fontSize="large"></InfoRoundedIcon>
       </Link>
       {/* Show the link to the logout button if the user is logged in */}
       {props.user.id && (
-        <>
-          {/* Links that are no longer needed */}
-          {/* <Link className="nav-link" to="/info">
-            Info
-          </Link> */}
-          {/* <Link className="nav-link" to="/add-word">
-            Add New Word
-          </Link> 
-          <Link className="nav-link" to="/card-sets">
-            Your Card Sets
+          <Link className="nav-link">
+            <LogOutButton style={{color: "white"}}/>
           </Link>
-          <Link className="nav-link" to="/inverse-card-sets">
-            Add a Pre-existing Set
-          </Link> */}
-          <LogOutButton className="nav-link"/>
-        </>
       )}
     </div>
   </div>

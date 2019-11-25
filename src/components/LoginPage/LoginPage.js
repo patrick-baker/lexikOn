@@ -35,7 +35,7 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <>
+      <div>
         {/* Responsible for the background image */}
         <div className="bg">
         </div>
@@ -111,7 +111,7 @@ class LoginPage extends Component {
             Register here
           </h6>
         </center>
-      </>
+      </div>
     );
   }
 }

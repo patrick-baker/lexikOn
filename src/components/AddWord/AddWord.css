@@ -13,8 +13,8 @@
 }
 
 .card-container {
-    height: 75vh;
-    width: 90vw;
+    height: 80vh;
+    width: 85vw;
     display: flex;
     justify-content: space-evenly;
     align-items: center;

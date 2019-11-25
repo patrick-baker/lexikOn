@@ -7,6 +7,8 @@ import {
   Link
 } from 'react-router-dom';
 
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
 import {connect} from 'react-redux';
 
 import Nav from '../Nav/Nav';
@@ -24,6 +26,20 @@ import WordsList from '../WordsList/WordsList';
 
 import './App.css';
 
+const myTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#26408B'
+    },
+    secondary: {
+      main: '#81B1D5'
+    },
+    error: {
+      main: '#a73d4f'
+    }
+  }
+});
+
 class App extends Component {
   componentDidMount () {
     this.props.dispatch({type: 'FETCH_USER'});
@@ -34,11 +50,12 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <ThemeProvider theme={myTheme}>
+        <div >
         {this.props.user.id &&
         <div className="top-title">
-          <Link to="/home" style={{textDecoration: 'none'}}>
-            <h1 className="title">lexikOn</h1>
+          <Link to="/home" color='darkest' style={{textDecoration: 'none'}}>
+            <h1 className="title" >LexikOn</h1>
           </Link>
         </div>}
           <Switch>
@@ -94,6 +111,7 @@ class App extends Component {
           <Nav />
           {/* <pre>{JSON.stringify(this.props)}</pre> */}
         </div>
+        </ThemeProvider>
       </Router>
   )}
 }

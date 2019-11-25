@@ -16,6 +16,8 @@ const CardListPaper = styled(Paper) ({
     textAlign: 'center',
     maxWidth: 500,
     padding: 20,
+    backgroundColor: '#f7f7f7',
+    color: '#26408B'
 })
 
 

@@ -10,7 +10,7 @@ const LogOutButton = props => (
     className={props.className}
     onClick={() => props.dispatch({ type: 'LOGOUT' })}
   >
-    <ExitToAppRoundedIcon></ExitToAppRoundedIcon>
+    <ExitToAppRoundedIcon style={{color: 'white'}} fontSize="large"></ExitToAppRoundedIcon>
   </button>
 );
 

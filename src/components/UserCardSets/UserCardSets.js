@@ -65,7 +65,7 @@ class UserCardSets extends Component {
 
     render() {
         return (
-            <>
+            <div>
                 {/* Conditional rendering of add and delete card set buttons if add new card mode is false */}
                 {this.state.newCardMode === false && <div className="button-container"> 
                     {/* <AddCircleOutlineIcon onClick={() => this.setState({open: true})} fontSize='large' color='primary'></AddCircleOutlineIcon> */}
@@ -110,7 +110,7 @@ class UserCardSets extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </>
+            </div>
         )
     }
 }

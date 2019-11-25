@@ -51,9 +51,9 @@ class WordsList extends Component {
 
     render() {
         return (
-            <div style={{textAlign: "center"}}>
+            <div style={{textAlign: "center", backgroundColor: '#f7f7f7'}}>
                 {/* Puts the card set title on the screen */}
-                <h1 onClick={() => this.handleAddWordToCardSet(this.props.match.params.id)}>{this.props.words.cardSetWordsReducer[0] && this.props.words.cardSetWordsReducer[0].set_name}</h1>
+                <h1 style={{color: '#81B1D5'}} onClick={() => this.handleAddWordToCardSet(this.props.match.params.id)}>{this.props.words.cardSetWordsReducer[0] && this.props.words.cardSetWordsReducer[0].set_name}</h1>
                 {/* Maps through the cardSetWordsReducer to display the words on the screen. */} 
                 <WordsListContainer>
                 <WordsGridList cellHeight={180}>

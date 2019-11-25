@@ -100,7 +100,7 @@ class AddWord extends Component {
     render() {
         return (
             <div className="card-container">
-                <h2>New Word Card</h2>
+                <h4 style={{margin: 0}}>New Word Card</h4>
                 <Card className="new-word-card">
                     <CardActionArea>
                         <CardContent>
@@ -110,10 +110,11 @@ class AddWord extends Component {
                                     id="outlined-basic"
                                     label="Translate here"
                                     value={this.state.keyword}
-                                    margin="normal"
+                                    margin="dense"
                                     variant="outlined"
                                     onChange={this.handleInput}
                                     color="primary"
+                                    style={{maxWidth: '150px'}}
                                 />
                                 <Button variant="outlined" color="primary" onClick={this.handleSearch}>SEARCH</Button>
                                 <RadioGroup aria-label="language-choice" name="language-choice" row>
@@ -131,10 +132,10 @@ class AddWord extends Component {
                                     />
                                 </RadioGroup>
                             </div>
-                            <Typography gutterBottom color="textSecondary" variant="h5" component="h2">
+                            <Typography gutterBottom color="textSecondary" variant="subtitle1" component="p">
                                 Original Word: {this.props.newWord.translateFromReducer}
                             </Typography>
-                            <Typography variant="h5" component="p">
+                            <Typography variant="subtitle1" component="p">
                                 Translation: {this.props.newWord.translationReducer}
                             </Typography>
                         </CardContent>

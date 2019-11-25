@@ -10,9 +10,9 @@ class inverseUserCardSets extends Component {
 
     render() {
         return (
-            <>
+            <div>
                 <CardSetList listType="inverseUserSets"/>
-            </>
+            </div>
         )
     }
 }
