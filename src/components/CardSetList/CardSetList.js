@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Container, Button, Paper, Grid, TextField} from '@material-ui/core';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if user is creator of set they are deleting
 import { styled } from '@material-ui/core/styles';
 import {withRouter} from 'react-router-dom';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
@@ -27,7 +28,9 @@ const CardListPaper = styled(Paper) ({
 class CardSetList extends Component {
     state={
         idToEdit: '',
-        newSetName: ''
+        idToDelete: '',
+        newSetName: '',
+        open: false
     }
 
     // adds the pre-existing set to the user's repertoire
@@ -40,7 +43,7 @@ class CardSetList extends Component {
         this.props.history.push(`/card-set-words/${setId}`);
     }
 
-    // toggles between set name and input for edit mode of card set
+    // toggles between displaying the card set name and input and Change button for edit mode of card set
     handleEditMode = (setId, setName) => {
         this.state.idToEdit ?
         this.setState({
@@ -52,9 +55,31 @@ class CardSetList extends Component {
             newSetName: setName
         })
     }
+     // permanently deletes card set if the user is the creator of the set
+    handleDeleteCardSet = (setId) => {
+        this.setState({
+            idToDelete: ''
+        })
+        console.log('setId in handleDeleteCardSet', setId);
+        this.props.dispatch({type: 'DELETE_CARD_SET_PERMANENTLY', payload: setId})
+        this.handleDialogClose();
+    }
+
+    // closes the modal which is opened up by attempting to delete a card set of the user's creation
+    handleDialogClose = () => {
+        this.setState({ open: false }); // removes modal when user clicks off of it
+    };
 
     // dispatches remove set saga when the delete is hit on a given card set
-    handleRemoveCardSet = (setId) => {
+    handleRemoveCardSet = (setId, creatorId) => {
+        console.log('setId, creatorId in handleRemoveCardSet', setId, creatorId);
+        creatorId == this.props.user.id ?
+        // opens modal to ensure that the user wants to permanently delete the chosen card set if the user is the creator
+        this.setState({
+            open: true,
+            idToDelete: setId
+        }) :
+        // removes card set just from repertoire if the user is not the creator
         this.props.dispatch({type: 'REMOVE_CARD_SET_FROM_REPERTOIRE', payload: setId})
     }
 
@@ -125,11 +150,11 @@ class CardSetList extends Component {
                                         >{set.name}</h3>}
                                     </div>
                                     {this.props.editMode && 
-                                        <div className="flex-container" style={{width: '15%', justifyContent: 'space-between'}}>
+                                        <div className="flex-container" style={{width: '15%', justifyContent: 'space-between', flexDirection: 'row-reverse'}}>
+                                            <DeleteRoundedIcon onClick={() => this.handleRemoveCardSet(set.id, set.creator_user_id)}/>
                                             { // only renders the edit button for the creator of the set
                                             (set.creator_user_id == this.props.user.id) &&
                                             <EditRoundedIcon onClick={() => this.handleEditMode(set.id, set.name)}/>}
-                                            <DeleteRoundedIcon onClick={() => this.handleRemoveCardSet(set.id)}/>
                                         </div>
                                     }
                                 </div>
@@ -138,14 +163,14 @@ class CardSetList extends Component {
                         )}
                     </Grid>
                 </ListContainer>
-                {/* renders users card sets on cardSets page */}
+                {/* renders users card sets on inverseCardSets page */}
                 {this.props.listType === 'inverseUserSets' && this.props.cardSets.inverseUserCardSetsReducer[0] && 
                 <ListContainer maxWidth="lg">
                     <Grid container spacing={3} style={{marginTop: 20}}>
                         {this.props.cardSets.inverseUserCardSetsReducer.map(set =>
                             <CardListGridItem item xs={12} key={set.id}>
                                 <CardListPaper
-                                // Brings the user to the word list page of the chosen card set
+                                // Adds the chosen card set to the user's card set repertoire
                                 onClick={() => this.handleAddExistingCardSet(set.id)}
                                 ><h3>{set.name}</h3>
                                 </CardListPaper>
@@ -153,6 +178,30 @@ class CardSetList extends Component {
                         )}
                     </Grid> 
                 </ListContainer>}
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleDialogClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Permanently delete this card set?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            You are the creator of this set. Would you like to permanently delete it from the database?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        {/* Pressing No should bring the user to the create card set screen. */}
+                        <Button onClick={() => this.handleDialogClose()} color="primary">
+                            No, I want to keep it.
+                        </Button>
+                        {/* Pressing yes should bring the user to a list of card sets that 
+                        they do not have in their repertoire.*/}
+                        <Button onClick={() => this.handleDeleteCardSet(this.state.idToDelete)} color="primary" autoFocus>
+                            Yes, trash it.
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </>
         )
     }
