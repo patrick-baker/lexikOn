@@ -1,11 +1,11 @@
 const express = require('express');
 const pool = require('../modules/pool');
-const axios = require('axios');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 const router = express.Router();
 
 // fetch route to DB to grab all the words in the chosen set
-router.get('/cardSet/:id', (req, res) => {
+router.get('/cardSet/:id', rejectUnauthenticated, (req, res) => {
     console.log(`in /api/words/cardSet/${req.params.id}`);
     const queryText = `SELECT "set_id", "name" as "set_name", "word_id", "english_entry", "russian_entry", "image_url" FROM "words"
     RIGHT OUTER JOIN "words_in_sets" ON "words_in_sets"."word_id" = "words"."id"

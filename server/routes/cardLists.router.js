@@ -92,7 +92,7 @@ router.post('/addExistingCardSet', rejectUnauthenticated, (req, res) => {
     })
 })
 
-router.put('/updateCardSetName', (req, res) => {
+router.put('/updateCardSetName', rejectUnauthenticated, (req, res) => {
     console.log('in card set name update', req.body);
     const queryText=`UPDATE "card_sets" 
     SET "name" = $1
@@ -110,7 +110,7 @@ router.put('/updateCardSetName', (req, res) => {
 
 // deletes card set permanently from all relevant tables in required order
 // learned about cascade Delete and SQL transactions after the fact; would use one of these strategies in the future
-router.delete('/deleteCardSet/:setId', (req, res) => {
+router.delete('/deleteCardSet/:setId', rejectUnauthenticated, (req, res) => {
     console.log('in card set deletion from user_sets of id:', req.params.setId);
     const queryText1=`DELETE FROM "user_sets" 
     WHERE "set_id" = $1;`;
@@ -146,7 +146,7 @@ router.delete('/deleteCardSet/:setId', (req, res) => {
 })
 
 // removes card set from user's repertoire
-router.delete('/removeCardSet/:setId', (req, res) => {
+router.delete('/removeCardSet/:setId', rejectUnauthenticated, (req, res) => {
     console.log('in card set removal', req.params);
     const queryText=`DELETE FROM "user_sets" 
     WHERE "user_id" = $1 AND "set_id" = $2;`;

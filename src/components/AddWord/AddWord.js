@@ -8,18 +8,16 @@ import './AddWord.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+import Modal from '../Modal/Modal';
+
 class AddWord extends Component {
     state = {
-        keyword: '',
-        imageToShow: '',
-        open: false,
-        preexistingWordId: '',
+        keyword: '', // searched word stored in local state
+        open: false, // open status of the modal for adding existing word, if searched word already exists in DB
+        preexistingWordId: '', // sets the preexisting word id to local state, if user wants to add this word to their set
     }
 
-    componentDidMount () {
-        console.log('in add word component, this.props.match.params.setId', this.props.match.params.setId);
-    }
-
+    // clears the reducers displaying on this page, so the page is clear the next time it is reached
     componentWillUnmount() {
         this.props.dispatch({ type: 'GET_TRANSLATION', payload: '' });
         this.props.dispatch({ type: 'GET_IMAGES', payload: [] });
@@ -77,10 +75,12 @@ class AddWord extends Component {
         this.handleClose();
     }
 
+    // closes modal dialog box
     handleClose = () => {
         this.setState({ open: false });
       };
 
+    // sets the keyword in local state from searched word
     handleInput = (event) => {
         this.setState({
             keyword: event.target.value
@@ -157,32 +157,21 @@ class AddWord extends Component {
                 </Card>
                 <Button size="small" color="primary" variant="outlined" onClick={this.checkDataBaseForWord}>
                     Add Word
-                    </Button>
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Use Pre-existing word?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            This word already exists in the database. 
-                            The preexisting word will be added to your card set.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleAddExistingWord} color="primary">
-                            Agree
-                        </Button>
-                        {/* Pressing agree should add the preexisting word to the card set, 
+                </Button>
+
+                {/* Pressing agree should add the preexisting word to the card set, 
                         Post request to cards_words junction table */}
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Disagree
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-                {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
+                <Modal 
+                open={this.state.open}
+                handleClose={this.handleClose}
+                ariaLabelledBy="alert for existing word"
+                ariaDescribedBy="this alert pops up when a user attempts to add a word that already exists in the database"
+                title="Use Pre-existing word?"
+                description="This word already exists in the database. 
+                The preexisting word will be added to your card set."
+                handleAddExistingWord={this.handleAddExistingWord}
+                handleClose={this.handleClose}        
+                />
             </div>
         )
     }
