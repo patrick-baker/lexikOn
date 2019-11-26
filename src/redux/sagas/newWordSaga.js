@@ -25,7 +25,13 @@ function* fetchTranslationSaga(action) {
         // sends the retrieved translation word to the translationReducer in newWordReducer.js
         yield put({ type: 'GET_TRANSLATION', payload: receivedTranslation.data.text[0]});
         // sends the original searched word to the translateFromReducer in newWordReducer.js
-        yield put({ type: 'TRANSLATE_FROM', payload: action.payload})
+        yield put({ type: 'TRANSLATE_FROM', payload: action.payload.search})
+        // searches for the image with the english word
+        if (action.payload.language === 'en-ru') {
+            yield put ({type: 'FETCH_IMAGE', payload: action.payload.search});
+        } else if (action.payload.language === 'ru-en') {
+            yield put ({type: 'FETCH_IMAGE', payload: receivedTranslation.data.text[0]});
+        }
     } catch (error) {
         console.log('error fetching translation', error);
     }

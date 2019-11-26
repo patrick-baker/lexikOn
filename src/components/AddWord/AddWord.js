@@ -17,12 +17,19 @@ class AddWord extends Component {
         inputLanguage: 'en-ru'
     }
 
+    componentWillUnmount() {
+        // clears the reducers displaying on this page, so the page is clear the next time it is reached
+        this.props.dispatch({ type: 'GET_TRANSLATION', payload: '' });
+        this.props.dispatch({ type: 'GET_IMAGES', payload: [] });
+        this.props.dispatch({ type: 'TRANSLATE_FROM', payload: ''});
+    }
+
     checkDataBaseForWord = () => {
         // Runs axios request to server to check for match of searched word in relevant language, runs modal if match is found
         console.log('in checkDataBaseForWord');
         axios({
             method: 'GET',
-            url: `/api/translate/checkDB/${this.props.inputLanguage}/${this.props.newWord.translateFromReducer}`
+            url: `/api/translate/checkDB/${this.state.inputLanguage}/${this.props.newWord.translateFromReducer}`
         })
             .then(response => {
                 // if response from database is conclusive, sets local state open property to true, 
@@ -58,8 +65,8 @@ class AddWord extends Component {
             })
     }
 
-    // clears the reducers displaying on this page, so the page is clear the next time it is reached
-    clearTranslationReducers = () => {
+     // clears the reducers displaying on this page, so the page is clear the next time it is reached
+     clearTranslationReducers = () => {
         this.props.dispatch({ type: 'GET_TRANSLATION', payload: '' });
         this.props.dispatch({ type: 'GET_IMAGES', payload: [] });
         this.props.dispatch({ type: 'TRANSLATE_FROM', payload: ''});
@@ -101,10 +108,6 @@ class AddWord extends Component {
             search: this.state.keyword.charAt(0).toUpperCase() + this.state.keyword.slice(1) 
         }
     });
-        this.props.dispatch({ type: 'FETCH_IMAGE', payload: this.state.keyword });
-        this.setState({
-            keyword: ''
-        })
     }
 
     render() {
