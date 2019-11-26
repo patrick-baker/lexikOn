@@ -13,12 +13,10 @@ import {connect} from 'react-redux';
 
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
-
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
-
 import AboutPage from '../AboutPage/AboutPage';
 import AddWord from '../AddWord/AddWord';
-import UserPage from '../UserPage/UserPage';
+// import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 import UserCardSets from '../UserCardSets/UserCardSets';
 import InverseUserCardSets from '../InverseUserCardSets/InverseUserCardSets';
@@ -40,6 +38,7 @@ const myTheme = createMuiTheme({
   }
 });
 
+// fetches relevant data on app refresh
 class App extends Component {
   componentDidMount () {
     this.props.dispatch({type: 'FETCH_USER'});
@@ -54,7 +53,7 @@ class App extends Component {
         <div >
         {this.props.user.id &&
         <div className="top-title">
-          <Link to="/home" color='darkest' style={{textDecoration: 'none'}}>
+          <Link to="/home" style={{textDecoration: 'none'}}>
             <h1 className="title" >LexikOn</h1>
           </Link>
         </div>}
@@ -69,7 +68,7 @@ class App extends Component {
               component={AboutPage}
             />
             {/* For protected routes, the view could show one of several things on the same route.
-            Visiting localhost:3000/home will show the UserPage if the user is logged in.
+            Visiting localhost:3000/home will show the UserCardSets if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
             Even though it seems like they are different pages, the user is always on localhost:3000/home */}
             <ProtectedRoute
@@ -89,11 +88,6 @@ class App extends Component {
               path="/add-word/:setId"
               component={AddWord}
             />
-            {/* <ProtectedRoute
-              exact
-              path="/card-sets"
-              component={UserCardSets}
-            /> */}
             <ProtectedRoute
               exact
               path="/inverse-card-sets"

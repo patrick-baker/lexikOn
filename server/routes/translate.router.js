@@ -28,7 +28,7 @@ router.get('/:lang/:text', rejectUnauthenticated, (req, res) => {
 // queries DB to check if ENGLISH word is already present
 // en parameter specifies this word to English
 // search param is the word to search
-router.get('/checkDB/en/:search', rejectUnauthenticated, (req, res) => {
+router.get('/checkDB/en-ru/:search', rejectUnauthenticated, (req, res) => {
     console.log(req.params.search);
     const queryText = `SELECT * FROM "words" WHERE "english_entry" = $1;`;
     pool.query(queryText, [req.params.search])
@@ -44,7 +44,7 @@ router.get('/checkDB/en/:search', rejectUnauthenticated, (req, res) => {
 // queries DB to check if RUSSIAN word is already present
 // ru parameter specifies this word to Russian
 // search param is the word to search
-router.get('/checkDB/ru/:search', rejectUnauthenticated, (req, res) => {
+router.get('/checkDB/ru-en/:search', rejectUnauthenticated, (req, res) => {
     console.log(req.params.search);
     const queryText = `SELECT * FROM "words" WHERE "russian_entry" = $1;`;
     pool.query(queryText, [req.params.search])

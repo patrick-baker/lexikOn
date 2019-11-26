@@ -20,7 +20,7 @@ function* fetchImageSaga(action) {
 function* fetchTranslationSaga(action) {
     try {
         // runs search through the server, with action.payload as the searched word
-        const receivedTranslation = yield axios.get(`/api/translate/en-ru/${action.payload}`);
+        const receivedTranslation = yield axios.get(`/api/translate/${action.payload.language}/${action.payload.search}`);
         console.log(receivedTranslation);
         // sends the retrieved translation word to the translationReducer in newWordReducer.js
         yield put({ type: 'GET_TRANSLATION', payload: receivedTranslation.data.text[0]});

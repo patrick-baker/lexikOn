@@ -19,13 +19,13 @@ class Modal extends Component {
                         </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.handleAddExistingWord} color="primary">
-                        Agree
+                    <Button onClick={this.props.agreeFunction} color="primary">
+                        {this.props.agreeText}
                         </Button>
                     {/* Pressing agree should add the preexisting word to the card set, 
                         Post request to cards_words junction table */}
-                    <Button onClick={this.props.handleClose} color="primary" autoFocus>
-                        Disagree
+                    <Button onClick={this.props.disagreeFunction} color="primary" autoFocus>
+                        {this.props.disagreeText}
                         </Button>
                 </DialogActions>
             </Dialog>
