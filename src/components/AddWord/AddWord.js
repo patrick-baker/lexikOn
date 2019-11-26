@@ -1,37 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardActionArea, CardContent, CardMedia, Button, Typography, TextField, Radio, RadioGroup, FormControlLabel } from '@material-ui/core'; // components for newWordCard contents
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TranslateRoundedIcon from '@material-ui/icons/TranslateRounded';
 import './AddWord.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+import Modal from '../Modal/Modal';
+
 class AddWord extends Component {
     state = {
-        keyword: '',
-        imageToShow: '',
-        open: false,
-        preexistingWordId: '',
-    }
-
-    componentDidMount () {
-        console.log('in add word component, this.props.match.params.setId', this.props.match.params.setId);
+        keyword: '', // searched word stored in local state
+        open: false, // open status of the modal for adding existing word, if searched word already exists in DB
+        preexistingWordId: '', // sets the preexisting word id to local state, if user wants to add this word to their set
+        inputLanguage: 'en-ru'
     }
 
     componentWillUnmount() {
+        // clears the reducers displaying on this page, so the page is clear the next time it is reached
         this.props.dispatch({ type: 'GET_TRANSLATION', payload: '' });
         this.props.dispatch({ type: 'GET_IMAGES', payload: [] });
         this.props.dispatch({ type: 'TRANSLATE_FROM', payload: ''});
     }
 
     checkDataBaseForWord = () => {
-        // Runs axios request to server to check for match of searched word, runs modal if match is found
+        // Runs axios request to server to check for match of searched word in relevant language, runs modal if match is found
         console.log('in checkDataBaseForWord');
         axios({
             method: 'GET',
-            url: `/api/translate/checkDB/en/${this.props.newWord.translateFromReducer}`
+            url: `/api/translate/checkDB/${this.state.inputLanguage}/${this.props.newWord.translateFromReducer}`
         })
             .then(response => {
                 // if response from database is conclusive, sets local state open property to true, 
@@ -59,11 +57,19 @@ class AddWord extends Component {
                         'Success',
                         'success'
                       )
+                    this.clearTranslationReducers();
                 }
             })
             .catch(err => {
                 console.log(err);
             })
+    }
+
+     // clears the reducers displaying on this page, so the page is clear the next time it is reached
+     clearTranslationReducers = () => {
+        this.props.dispatch({ type: 'GET_TRANSLATION', payload: '' });
+        this.props.dispatch({ type: 'GET_IMAGES', payload: [] });
+        this.props.dispatch({ type: 'TRANSLATE_FROM', payload: ''});
     }
 
     // adds preexisting DB word if the user clicks agree in the modal
@@ -75,26 +81,34 @@ class AddWord extends Component {
             } 
         })
         this.handleClose();
+        this.clearTranslationReducers();
     }
 
+    // closes modal dialog box
     handleClose = () => {
         this.setState({ open: false });
       };
 
+    // sets the keyword in local state from searched word
     handleInput = (event) => {
         this.setState({
             keyword: event.target.value
         })
     }
 
-    handleSearch = () => {
-        this.props.dispatch({ type: 'FETCH_TRANSLATION', payload: this.state.keyword.charAt(0).toUpperCase() + this.state.keyword.slice(1) });
-        this.props.dispatch({ type: 'FETCH_IMAGE', payload: this.state.keyword });
+    handleRadioChange = event => {
         this.setState({
-            keyword: ''
+            inputLanguage: event.target.value
         })
     }
 
+    handleSearch = () => {
+        this.props.dispatch({ type: 'FETCH_TRANSLATION', payload: {
+            language: this.state.inputLanguage,
+            search: this.state.keyword.charAt(0).toUpperCase() + this.state.keyword.slice(1) 
+        }
+    });
+    }
 
     render() {
         return (
@@ -123,15 +137,15 @@ class AddWord extends Component {
                                       }}
                                 />
                                 <Button variant="outlined" color="primary" onClick={this.handleSearch}>SEARCH</Button>
-                                <RadioGroup aria-label="language-choice" name="language-choice" row>
+                                <RadioGroup aria-label="language-choice" name="language-choice" value={this.state.inputLanguage} onChange={(event) => this.handleRadioChange(event)} row>
                                     <FormControlLabel
-                                        value="En"
+                                        value="en-ru"
                                         control={<Radio color="primary" />}
                                         label="En Input"
                                         labelPlacement="start"
                                     />
                                     <FormControlLabel
-                                        value="Ru"
+                                        value="ru-en"
                                         control={<Radio color="secondary" />}
                                         label="Ru Input"
                                         labelPlacement="start"
@@ -157,32 +171,24 @@ class AddWord extends Component {
                 </Card>
                 <Button size="small" color="primary" variant="outlined" onClick={this.checkDataBaseForWord}>
                     Add Word
-                    </Button>
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Use Pre-existing word?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            This word already exists in the database. 
-                            The preexisting word will be added to your card set.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleAddExistingWord} color="primary">
-                            Agree
-                        </Button>
-                        {/* Pressing agree should add the preexisting word to the card set, 
-                        Post request to cards_words junction table */}
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Disagree
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-                {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
+                </Button>
+
+                {/* Modal that appears if searched word already exists in DB.
+                    Pressing agree should add the preexisting word to the card set, 
+                    Post request to cards_words junction table */}
+                <Modal 
+                open={this.state.open}
+                handleClose={this.handleClose}
+                ariaLabelledBy="alert for existing word"
+                ariaDescribedBy="this alert pops up when a user attempts to add a word that already exists in the database"
+                title="Use Pre-existing word?"
+                description="This word already exists in the database. 
+                The preexisting word will be added to your card set."
+                agreeFunction={this.handleAddExistingWord}
+                agreeText="Yes"
+                disagreeFunction={this.handleClose}
+                disagreeText="No"        
+                />
             </div>
         )
     }

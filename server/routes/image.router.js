@@ -1,12 +1,12 @@
 const express = require('express');
 require('dotenv').config();
-const pool = require('../modules/pool');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const axios = require('axios');
 
 
 const router = express.Router();
 // query Unsplash API
-router.get('/:search', (req, res) => {
+router.get('/:search', rejectUnauthenticated, (req, res) => {
     console.log(req.params);
     axios({
         method: 'GET',

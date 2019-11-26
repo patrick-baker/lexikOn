@@ -4,10 +4,6 @@ import CardSetList from '../CardSetList/CardSetList';
 
 class inverseUserCardSets extends Component {
 
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
     render() {
         return (
             <div>

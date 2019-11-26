@@ -1,5 +1,6 @@
 const express = require('express');
 const pool = require('../modules/pool');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const router = express.Router();
 
 /**
@@ -11,7 +12,7 @@ router.get('/', (req, res) => {
 
 // posts preexisting word to chosen card_set, which is stored in add card page as
 // match route param from card set list
-router.post('/existingWord', (req, res) => {
+router.post('/existingWord',rejectUnauthenticated, (req, res) => {
     console.log('in addWord/existingWord post route, req.body:', req.body);
     const queryText=`INSERT INTO "words_in_sets" ("word_id", "set_id")
         VALUES ($1, $2);`;
@@ -29,7 +30,7 @@ router.post('/existingWord', (req, res) => {
 // needs authorization
 // posts new word to database from AddWord form
 // also posts that word to the words_in_set, using set_id sent in req.body
-router.post('/newWord', (req, res) => {
+router.post('/newWord', rejectUnauthenticated, (req, res) => {
     console.log('in addWord/newWord post route, req.body:', req.body);
     const queryText = `INSERT INTO "words" ("english_entry", "russian_entry", "image_url", "image_artist") 
     VALUES ($1, $2, $3, $4) RETURNING id;`;

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Container, Button, Paper, Grid, TextField} from '@material-ui/core';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if user is creator of set they are deleting
 import { styled } from '@material-ui/core/styles';
 import {withRouter} from 'react-router-dom';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import './CardSetList.css';
+import Modal from '../Modal/Modal';
 
 const ListContainer = styled(Container) ({
     flexGrow: 1,
@@ -22,8 +22,6 @@ const CardListPaper = styled(Paper) ({
     backgroundColor: '#f7f7f7',
     color: '#26408B'
 })
-
-
 
 class CardSetList extends Component {
     state={
@@ -55,18 +53,19 @@ class CardSetList extends Component {
             newSetName: setName
         })
     }
+
      // permanently deletes card set if the user is the creator of the set
-    handleDeleteCardSet = (setId) => {
+    handleDeleteCardSet = () => {
+        console.log('setId in handleDeleteCardSet', this.state.idToDelete);
+        this.props.dispatch({type: 'DELETE_CARD_SET_PERMANENTLY', payload: this.state.idToDelete})
+        this.handleClose();
         this.setState({
             idToDelete: ''
         })
-        console.log('setId in handleDeleteCardSet', setId);
-        this.props.dispatch({type: 'DELETE_CARD_SET_PERMANENTLY', payload: setId})
-        this.handleDialogClose();
     }
 
     // closes the modal which is opened up by attempting to delete a card set of the user's creation
-    handleDialogClose = () => {
+    handleClose = () => {
         this.setState({ open: false }); // removes modal when user clicks off of it
     };
 
@@ -163,7 +162,8 @@ class CardSetList extends Component {
                         )}
                     </Grid>
                 </ListContainer>
-                {/* renders users card sets on inverseCardSets page */}
+
+                {/* renders all non-user's card sets on inverseCardSets page */}
                 {this.props.listType === 'inverseUserSets' && this.props.cardSets.inverseUserCardSetsReducer[0] && 
                 <ListContainer maxWidth="lg">
                     <Grid container spacing={3} style={{marginTop: 20}}>
@@ -178,30 +178,24 @@ class CardSetList extends Component {
                         )}
                     </Grid> 
                 </ListContainer>}
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleDialogClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Permanently delete this card set?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            You are the creator of this set. Would you like to permanently delete it from the database?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        {/* Pressing No should bring the user to the create card set screen. */}
-                        <Button onClick={() => this.handleDialogClose()} color="primary">
-                            No, I want to keep it.
-                        </Button>
-                        {/* Pressing yes should bring the user to a list of card sets that 
-                        they do not have in their repertoire.*/}
-                        <Button onClick={() => this.handleDeleteCardSet(this.state.idToDelete)} color="primary" autoFocus>
-                            Yes, trash it.
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                
+                {/* Activating the Modal is a result of deleting card set of user's creation */}
+                <Modal 
+                open={this.state.open}
+                handleClose={this.handleClose}
+                ariaLabelledBy="alert for deleting card set"
+                ariaDescribedBy="this alert pops up when a user attempts to delete a card set that they are the creator for"
+                title="Permanently delete this card set?"
+                description="You are the creator of this set. 
+                Would you like to permanently delete it from the database?"
+                /* Pressing yes should bring the user to a list of card sets that 
+                        they do not have in their repertoire.*/
+                agreeFunction={this.handleDeleteCardSet}   
+                agreeText="Yes, trash it!"
+                /* Pressing No should bring the user to the create card set screen. */
+                disagreeFunction={this.handleClose}
+                disagreeText="No, I want to keep it."  
+                />
             </>
         )
     }

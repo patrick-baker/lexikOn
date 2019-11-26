@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button } from '@material-ui/core';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'; // components for working with modal if currently displayed word does not exist in DB
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import CardSetList from '../CardSetList/CardSetList';
 import './UserCardSets.css';
 import Swal from 'sweetalert2';
+import Modal from '../Modal/Modal';
 
 class UserCardSets extends Component {
 
@@ -24,7 +23,7 @@ class UserCardSets extends Component {
         })
     }
 
-    handleDialogClose = () => {
+    handleClose = () => {
         this.setState({ open: false }); // removes modal when user clicks off of it
     };
 
@@ -36,7 +35,7 @@ class UserCardSets extends Component {
     }
 
     handleEnterNewCardMode = () => {
-        this.handleDialogClose();
+        this.handleClose();
         this.setState({
             newCardMode: true
         })
@@ -96,31 +95,23 @@ class UserCardSets extends Component {
                 handleSubmitNewSet={this.handleSubmitNewSet}
                 editMode={this.state.editMode}
                 />
-                {/* Modal dialog that shows when user presses the add new card button */}
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleDialogClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Add a new Card Set!"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Would you like to use a pre-existing card set?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        {/* Pressing No should bring the user to the create card set screen. */}
-                        <Button onClick={() => this.handleEnterNewCardMode()} color="primary">
-                            No, I want to make my own.
-                        </Button>
-                        {/* Pressing yes should bring the user to a list of card sets that 
-                        they do not have in their repertoire.*/}
-                        <Button onClick={() => this.props.history.push('/inverse-card-sets')} color="primary" autoFocus>
-                            Yes, use a finished set.
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                {/* Modal dialog that shows when user presses the add new card set button */}
+                <Modal 
+                open={this.state.open}
+                handleClose={this.handleClose}
+                ariaLabelledBy="alert for adding a card set"
+                ariaDescribedBy="this alert pops up when a user attempts to add a card set, 
+                allowing them to use preexisting or new set"
+                title="Add a new Card Set!"
+                description="Would you like to use a pre-existing card set?"
+                // Pressing yes should bring the user to a list of card sets that 
+                        //they do not have in their repertoire.
+                agreeFunction={() => this.props.history.push('/inverse-card-sets')}
+                // Pressing No should bring the user to the create card set screen. 
+                disagreeFunction={this.handleEnterNewCardMode}
+                agreeText="Yes, use a finished set."
+                disagreeText="No, I want to make my own."        
+                />
             </div>
         )
     }
