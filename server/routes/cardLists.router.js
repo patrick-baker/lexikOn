@@ -108,6 +108,43 @@ router.put('/updateCardSetName', (req, res) => {
     })
 })
 
+// deletes card set permanently from all relevant tables in required order
+// learned about cascade Delete and SQL transactions after the fact; would use one of these strategies in the future
+router.delete('/deleteCardSet/:setId', (req, res) => {
+    console.log('in card set deletion from user_sets of id:', req.params.setId);
+    const queryText1=`DELETE FROM "user_sets" 
+    WHERE "set_id" = $1;`;
+    const queryText2=`DELETE FROM "words_in_sets" 
+    WHERE "set_id" = $1;`;
+    const queryText3=`DELETE FROM "card_sets" 
+    WHERE "id" = $1;`;
+    pool.query(queryText1, [req.params.setId])
+    .then(() => {
+        console.log('in card set deletion query from words_in_sets of id:', req.params.setId);
+        pool.query(queryText2, [req.params.setId])
+        .then(() => {
+            console.log('in card set deletion query from card_sets of id:', req.params.setId)
+            pool.query(queryText3, [req.params.setId])
+            .then(() => {
+                console.log('successful deletion from card_sets of id:', req.params.id);
+                res.sendStatus(200);
+            })
+            .catch(err => {
+                console.log('error in deletion of card_set', req.params.id, err)
+                res.sendStatus(500);
+            })
+        })
+        .catch(err => {
+            console.log('error in deletion of words_in_sets of set id:', req.params.id, err)
+            res.sendStatus(500);
+        })
+    })
+    .catch((err) => {
+        console.log('error in deletion of user_sets query of set id:', req.params.id, err);
+        res.sendStatus(500);
+    })
+})
+
 // removes card set from user's repertoire
 router.delete('/removeCardSet/:setId', (req, res) => {
     console.log('in card set removal', req.params);

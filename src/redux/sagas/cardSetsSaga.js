@@ -1,6 +1,13 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
+function* deleteCardSet (action) {
+    console.log('in deleteCardSet, card set id', action.payload);
+    yield axios.delete(`/api/cardLists/deleteCardSet/${action.payload}`);
+    yield put ({type: 'FETCH_USER_CARD_SETS'});
+    yield put ({type: 'FETCH_INVERSE_USER_CARD_SETS'});
+}
+
 //fetches Users Card Sets from DB
 function* fetchUserCardSets(action) {
     try {
@@ -56,6 +63,7 @@ function* updateUserCardSetName (action) {
 }
 
 function* cardSetsSaga() {
+    yield takeLatest('DELETE_CARD_SET_PERMANENTLY', deleteCardSet);
     yield takeLatest('FETCH_USER_CARD_SETS', fetchUserCardSets);
     yield takeLatest('FETCH_INVERSE_USER_CARD_SETS', fetchInverseUserCardSets);
     yield takeLatest('POST_NEW_CARD_SET', postNewCardSet);
