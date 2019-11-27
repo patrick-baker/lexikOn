@@ -47,9 +47,10 @@ class App extends Component {
   }
 
   render() {
-    return (
+    return ( 
+      <>
+      <ThemeProvider theme={myTheme}>
       <Router>
-        <ThemeProvider theme={myTheme}>
         <div >
         {this.props.user.id &&
         <div className="top-title">
@@ -105,8 +106,9 @@ class App extends Component {
           <Nav />
           {/* <pre>{JSON.stringify(this.props)}</pre> */}
         </div>
-        </ThemeProvider>
       </Router>
+      </ThemeProvider>
+      </>
   )}
 }
 

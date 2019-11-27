@@ -8,13 +8,15 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import Modal from '../Modal/Modal';
+import SnackBar from '../MySnackBar/MySnackBar';
 
 class AddWord extends Component {
     state = {
         keyword: '', // searched word stored in local state
         open: false, // open status of the modal for adding existing word, if searched word already exists in DB
         preexistingWordId: '', // sets the preexisting word id to local state, if user wants to add this word to their set
-        inputLanguage: 'en-ru'
+        inputLanguage: 'en-ru', // the input language of the search entry, changed by radio buttons
+        snackBarOpen: false // the snackbar success message that opens when new word is added
     }
 
     componentWillUnmount() {
@@ -52,11 +54,8 @@ class AddWord extends Component {
                         set_id: this.props.match.params.setId
                         }
                     })
-                    Swal.fire(
-                        'The word has been added to your deck!',
-                        'Success',
-                        'success'
-                      )
+                    // success snackbar appears after word addition
+                    this.handleSnackBar();
                     this.clearTranslationReducers();
                 }
             })
@@ -80,6 +79,7 @@ class AddWord extends Component {
             set_id: this.props.match.params.setId
             } 
         })
+        this.handleSnackBar();
         this.handleClose();
         this.clearTranslationReducers();
     }
@@ -108,6 +108,17 @@ class AddWord extends Component {
             search: this.state.keyword.charAt(0).toUpperCase() + this.state.keyword.slice(1) 
         }
     });
+    }
+
+     // toggle display of snackbar, opens when word successfully added
+     handleSnackBar = () => {
+        this.state.snackBarOpen ?
+        this.setState({
+           snackBarOpen: false 
+        }):
+        this.setState({
+            snackBarOpen: true
+        })
     }
 
     render() {
@@ -169,7 +180,7 @@ class AddWord extends Component {
                         </CardMedia>}
                     </CardActionArea>
                 </Card>
-                <Button size="small" color="primary" variant="outlined" onClick={this.checkDataBaseForWord}>
+                <Button size="small" color="secondary" variant="contained" style={{color: 'white'}} onClick={this.checkDataBaseForWord}>
                     Add Word
                 </Button>
 
@@ -188,6 +199,11 @@ class AddWord extends Component {
                 agreeText="Yes"
                 disagreeFunction={this.handleClose}
                 disagreeText="No"        
+                />
+                <SnackBar
+                snackBarOpen={this.state.snackBarOpen}
+                handleSnackBar={this.handleSnackBar}
+                message="Word Successfully Added!"
                 />
             </div>
         )
