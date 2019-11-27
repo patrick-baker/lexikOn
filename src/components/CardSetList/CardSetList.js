@@ -102,7 +102,7 @@ class CardSetList extends Component {
                             <CardListPaper>
                                 <div className="flex-container">
                                     <TextField
-                                        style={{ margin: 0 }}
+                                        style={{ maxWidth: 150 }}
                                         label="New Card Set"
                                         margin="dense"
                                         variant="outlined"
@@ -115,6 +115,13 @@ class CardSetList extends Component {
                                         variant="contained" 
                                         onClick={() => this.props.handleSubmitNewSet()}>Add Set
                                     </Button>
+                                    <Button 
+                                        color="secondary" 
+                                        variant="contained" 
+                                        style={{color: 'white', maxWidth: 65}}
+                                        onClick={() => this.props.toggleNewCardMode()}>Cancel
+                                    </Button>
+
                                 </div>
                             </CardListPaper>
                         </CardListGridItem>}

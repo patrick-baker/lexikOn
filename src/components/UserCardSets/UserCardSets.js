@@ -7,6 +7,7 @@ import CardSetList from '../CardSetList/CardSetList';
 import './UserCardSets.css';
 import Swal from 'sweetalert2';
 import Modal from '../Modal/Modal';
+import SnackBar from '../MySnackBar/MySnackBar';
 
 class UserCardSets extends Component {
 
@@ -14,7 +15,8 @@ class UserCardSets extends Component {
         open: false, // local state for modal, upon add new card set click
         newCardMode: false, // switches to add new card set mode when true
         newCardSetInput: '', // input value for adding a new card set
-        editMode: false
+        editMode: false, // edit mode for changing name of, or removing, set
+        snackBarOpen: false // the snackbar success message that opens when new word is added
     }
 
     componentDidMount() {
@@ -34,11 +36,15 @@ class UserCardSets extends Component {
         })
     }
 
-    handleEnterNewCardMode = () => {
-        this.handleClose();
+    toggleNewCardMode = () => {
+        this.state.newCardMode ?
+        this.setState({
+            newCardMode: false
+        }) :
         this.setState({
             newCardMode: true
         })
+        this.handleClose();
     }
 
     handleSubmitNewSet = () => {
@@ -55,14 +61,12 @@ class UserCardSets extends Component {
             this.setState({
                 newCardMode: false
             })
-            Swal.fire(
-                'The set has been added to your repertoire!',
-                'Click on the set to add new words!',
-                'success'
-            )
+            // success snackbar appears after set addition
+            this.handleSnackBar();
         }
     // }
 
+    // toggles edit mode for editing card set
     toggleEditMode = () => {
         this.state.editMode ? 
         this.setState ({
@@ -70,6 +74,17 @@ class UserCardSets extends Component {
         }) :
         this.setState({
             editMode: true
+        })
+    }
+
+    // toggle display of snackbar, opens when word successfully added
+    handleSnackBar = () => {
+        this.state.snackBarOpen ?
+        this.setState({
+           snackBarOpen: false 
+        }):
+        this.setState({
+            snackBarOpen: true
         })
     }
 
@@ -94,6 +109,8 @@ class UserCardSets extends Component {
                 handleNewCardSetChange = {this.handleNewCardSetChange}
                 handleSubmitNewSet={this.handleSubmitNewSet}
                 editMode={this.state.editMode}
+                toggleEditMode={this.toggleEditMode}
+                toggleNewCardMode={this.toggleNewCardMode}
                 />
                 {/* Modal dialog that shows when user presses the add new card set button */}
                 <Modal 
@@ -108,9 +125,14 @@ class UserCardSets extends Component {
                         //they do not have in their repertoire.
                 agreeFunction={() => this.props.history.push('/inverse-card-sets')}
                 // Pressing No should bring the user to the create card set screen. 
-                disagreeFunction={this.handleEnterNewCardMode}
+                disagreeFunction={this.toggleNewCardMode}
                 agreeText="Yes, use a finished set."
                 disagreeText="No, I want to make my own."        
+                />
+                <SnackBar
+                snackBarOpen={this.state.snackBarOpen}
+                handleSnackBar={this.handleSnackBar}
+                message="Set Successfully Added!"
                 />
             </div>
         )
