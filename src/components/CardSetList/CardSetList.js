@@ -98,6 +98,8 @@ class CardSetList extends Component {
                 <ListContainer maxWidth="lg">
                     <Grid container spacing={3} style={{marginTop: 20}}>
                     {this.props.newCardMode === true && 
+                        //  conditionally renders a text field for creating a new card set if user enters new card mode
+                        // (chooses to create their own set when answering the 'add a new card' set prompt)
                         <CardListGridItem item xs={12}>
                             <CardListPaper>
                                 <div className="flex-container">
@@ -132,6 +134,7 @@ class CardSetList extends Component {
                                 <div className="flex-container">
                                     <div style={{width: '85%'}}>
                                         {set.id === this.state.idToEdit ?
+                                        // conditionally renders input field and submit button if the user chooses to edit a card set
                                         <div className="flex-container">
                                         <TextField
                                         style={{ maxWidth: 150 }}
@@ -149,13 +152,15 @@ class CardSetList extends Component {
                                         >Change
                                     </Button>
                                     </div>:
-                                        // Brings the user to the word list page of the chosen card set */ 
+                                        // if edit mode is not active for the card set, renders the title
+                                        // Brings the user to the word list page of the chosen card set 
                                         <h3
                                         onClick={() => this.handleDisplayCardSetWords(set.id)}
                                         style={{height: "100%", width: "100%"}}
                                         >{set.name}</h3>}
                                     </div>
-                                    {this.props.editMode && 
+                                    {this.props.editMode &&
+                                        // shows the delete and edit icons in the card set grid if edit mode is active 
                                         <div className="flex-container" style={{width: '15%', justifyContent: 'space-between', flexDirection: 'row-reverse'}}>
                                             <DeleteRoundedIcon onClick={() => this.handleRemoveCardSet(set.id, set.creator_user_id)}/>
                                             { // only renders the edit button for the creator of the set

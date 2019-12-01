@@ -15,8 +15,17 @@ function* fetchCardSetWordsSaga(action) {
     }
 }
 
+// deletes chosen word from current card set
+function* removeWordFromSetSaga(action) {
+    console.log('in removeWordFromSetSaga, entry to delete', action.payload);
+    yield axios.delete(`/api/words/remove/${action.payload.wordInSetId}`);
+    // retrieves updated card set words
+    yield put({type: 'FETCH_CARD_SET_WORDS', payload: action.payload.setId});
+}
+
 function* wordsSaga() {
     yield takeLatest('FETCH_CARD_SET_WORDS', fetchCardSetWordsSaga);
+    yield takeLatest('REMOVE_WORD_FROM_SET', removeWordFromSetSaga);
 }
 
 export default wordsSaga;

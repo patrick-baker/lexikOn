@@ -36,6 +36,12 @@ body {
     margin: 50px;
 }
 
+.flex-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 form {
     width: 50%;
     height: 25vh;
@@ -87,3 +93,23 @@ input {
       display: inline-block;
       color: black;
   }
+
+  /* controls coditions for the CSS transition in react-trainsition-group */
+.fade-enter {
+    opacity: 0;
+    z-index: 1;
+  }
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+  }
+
+  /* fade classes ensure that the exiting component disappears immediately during transition */
+.fade-exit {
+    opacity: 1
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 0ms ease-in-out
+}

@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
   Link
 } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
@@ -16,7 +17,6 @@ import Footer from '../Footer/Footer';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import AboutPage from '../AboutPage/AboutPage';
 import AddWord from '../AddWord/AddWord';
-// import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 import UserCardSets from '../UserCardSets/UserCardSets';
 import InverseUserCardSets from '../InverseUserCardSets/InverseUserCardSets';
@@ -51,6 +51,7 @@ class App extends Component {
       <>
       <ThemeProvider theme={myTheme}>
       <Router>
+      <Route render={({ location }) => (
         <div >
         {this.props.user.id &&
         <div className="top-title">
@@ -58,7 +59,12 @@ class App extends Component {
             <h1 className="title" >LexikOn</h1>
           </Link>
         </div>}
-          <Switch>
+          <TransitionGroup>
+            <CSSTransition
+            key={location.key}
+            classNames="fade"
+            timeout={300}>
+          <Switch location={location}>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
             {/* Visiting localhost:3000/about will show the about page.
@@ -101,11 +107,13 @@ class App extends Component {
             />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />
-          </Switch>
-          <Footer />
+          </Switch> 
+          </CSSTransition>
+          </TransitionGroup>
           <Nav />
           {/* <pre>{JSON.stringify(this.props)}</pre> */}
         </div>
+        )}/>
       </Router>
       </ThemeProvider>
       </>
