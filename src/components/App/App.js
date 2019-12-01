@@ -63,7 +63,7 @@ class App extends Component {
             <CSSTransition
             key={location.key}
             classNames="fade"
-            timeout={100}>
+            timeout={300}>
           <Switch location={location}>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
@@ -110,7 +110,6 @@ class App extends Component {
           </Switch> 
           </CSSTransition>
           </TransitionGroup>
-          <Footer />
           <Nav />
           {/* <pre>{JSON.stringify(this.props)}</pre> */}
         </div>

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Container} from '@material-ui/core';
-import {GridList, GridListTile, GridListTileBar} from '@material-ui/core';
-// import InfoIcon from '@material-ui/icons/Info';
+import {GridList, GridListTile, GridListTileBar, Paper, Container, Grid} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import { styled } from '@material-ui/core/styles';
+import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
 const WordsListContainer = styled(Container) ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    // backgroundColor: theme.palette.background.paper
 });
 
 const WordsGridList = styled(GridList) ({
@@ -18,20 +18,37 @@ const WordsGridList = styled(GridList) ({
     height: 450,
 });
 
-// const WordsIconButton = styled(IconButton) ({
-//     color: 'rgba(255, 255, 255, 0.54)'
-// })
+const CardListPaper = styled(Paper) ({
+  textAlign: 'center',
+  maxWidth: 500,
+  padding: 15,
+  backgroundColor: '#f7f7f7',
+  color: '#26408B'
+})
+
+const DeleteWordIcon = styled(ClearRoundedIcon) ({
+  // position: 'relative',
+  // left: 20,
+  // top: 20,
+  color: 'white'
+})
 
 class WordsList extends Component {
     // the title of the chosen card set
     state = {
-        setTitle: ''
+      removeWordMode: false
     }
 
+    // fetches card set's words from database on component mount
     componentDidMount() {
         const setId = this.props.match.params.id;
         this.props.dispatch({type:'FETCH_CARD_SET_WORDS', payload: setId})
         console.log('count');
+    }
+
+    // empties word reducer on page unmount, so correct words render when card set is entered next
+    componentWillUnmount() {
+      this.props.dispatch({type: 'GET_CARD_SET_WORDS', payload: []});
     }
 
     // allows the set creator to edit it, and prevents all others from doing so
@@ -49,28 +66,66 @@ class WordsList extends Component {
         }
     }
 
+    handleRemoveWordMode = () => {
+      this.state.removeWordMode ? 
+      this.setState({
+        removeWordMode: false
+      }) :
+      this.setState({
+        removeWordMode: true
+      })
+    }
+
+    handleRemoveWord = (wordInSetId) => {
+      const setId = this.props.match.params.id;
+      // removes chosen word from current set by removing the junction table entry
+      this.props.dispatch({type: 'REMOVE_WORD_FROM_SET', payload: {
+        wordInSetId: wordInSetId,
+        setId: setId
+      }});
+    }
+
     render() {
         return (
-            <div style={{textAlign: "center", backgroundColor: '#f7f7f7'}}>
+            <div style={{textAlign: "center"}}>
                 {/* Puts the card set title on the screen */}
-                <h1 style={{color: '#81B1D5'}} onClick={() => this.handleAddWordToCardSet(this.props.match.params.id)}>{this.props.words.cardSetWordsReducer[0] && this.props.words.cardSetWordsReducer[0].set_name}</h1>
+                <Container>
+                    <Grid item xs={12} style={{marginTop: 10, marginBottom: 20}}>
+                      <CardListPaper>
+                      <div className="flex-container">
+                      <div style={{width: '85%'}}>
+                        <h3>{this.props.words.cardSetWordsReducer[0] && this.props.words.cardSetWordsReducer[0].set_name}</h3>
+                        </div>
+                        {// only renders the delete word mode button and add word button for the creator of the set
+                          (this.props.words.cardSetWordsReducer[0] && 
+                            this.props.words.cardSetWordsReducer[0].creator_user_id == this.props.user.id) &&
+                          <div className="flex-container" style={{width: '15%', justifyContent: 'space-between'}}>
+                          <AddRoundedIcon onClick={() => this.handleAddWordToCardSet(this.props.match.params.id)}/>
+                          <ClearRoundedIcon onClick={() => this.handleRemoveWordMode()}/>
+                        </div>}
+                        </div>
+                      </CardListPaper>
+                    </Grid>
+                </Container>
                 {/* Maps through the cardSetWordsReducer to display the words on the screen. */} 
                 <WordsListContainer>
                 <WordsGridList cellHeight={180}>
-                  {/* <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                    <ListSubheader component="div">December</ListSubheader>
-                  </GridListTile> */}
                   {this.props.words.cardSetWordsReducer.map(word => (
-                    <GridListTile key={word.word_id}>
+                    <GridListTile key={word.wordInSetId}>
                       <img src={word.image_url} alt={word.english_entry} />
+                      {/* <DeleteWordIcon></DeleteWordIcon> */}
                       <GridListTileBar
-                        title={word.english_entry}
-                        subtitle={word.russian_entry}
-                        // actionIcon={
-                        //   <WordsIconButton aria-label={`info about ${word.english_entry}`}>
-                        //     <InfoIcon />
-                        //   </WordsIconButton>
-                        // }
+                        title={<div>En: {word.english_entry}<br/>Ру: {word.russian_entry}</div>}
+                        subtitle={word.image_artist}
+                        actionIcon={
+                          this.state.removeWordMode && 
+                          <IconButton 
+                          aria-label={`info about ${word.english_entry}`} 
+                          style={{color: 'white'}}
+                          onClick={() => this.handleRemoveWord(word.wordInSetId)}>
+                            <DeleteWordIcon/>
+                          </IconButton>
+                        }
                       />
                     </GridListTile>
                   ))}
