@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 
 import Modal from '../Modal/Modal';
 import SnackBar from '../MySnackBar/MySnackBar';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 class AddWord extends Component {
     state = {
@@ -16,7 +17,8 @@ class AddWord extends Component {
         open: false, // open status of the modal for adding existing word, if searched word already exists in DB
         preexistingWordId: '', // sets the preexisting word id to local state, if user wants to add this word to their set
         inputLanguage: 'en-ru', // the input language of the search entry, changed by radio buttons
-        snackBarOpen: false // the snackbar success message that opens when new word is added
+        snackBarOpen: false, // the snackbar success message that opens when new word is added
+        imageNumber: 0 // a number to be between 0 and 9, run on search, to allow user to choose different number
     }
 
     componentWillUnmount() {
@@ -49,8 +51,8 @@ class AddWord extends Component {
                     this.props.dispatch({type: 'ADD_NEW_WORD_TO_SET', payload: {
                         original_word: this.props.newWord.translateFromReducer,
                         translation: this.props.newWord.translationReducer,
-                        image: this.props.newWord.imagesReducer[0].urls.regular,
-                        imageAuthor: this.props.newWord.imagesReducer[0].user.name,
+                        image: this.props.newWord.imagesReducer[this.state.imageNumber].urls.regular,
+                        imageAuthor: this.props.newWord.imagesReducer[this.state.imageNumber].user.name,
                         set_id: this.props.match.params.setId
                         }
                     })
@@ -108,6 +110,9 @@ class AddWord extends Component {
             search: this.state.keyword.charAt(0).toUpperCase() + this.state.keyword.slice(1) 
         }
     });
+        this.setState({
+            imageNumber: Math.floor(Math.random() * 10)
+        })
     }
 
      // toggle display of snackbar, opens when word successfully added
@@ -121,13 +126,19 @@ class AddWord extends Component {
         })
     }
 
+    handleSetImageNumber = () => {
+        this.setState({
+            imageNumber: Math.floor(Math.random() * 10)
+        })
+    }
+
     render() {
         return (
             <div className="card-container">
                 <h4 style={{margin: 0}}>New Word Card</h4>
                 <Card className="new-word-card">
                     <CardActionArea>
-                        <CardContent>
+                        <CardContent style={{position: 'relative'}}>
                             <div className="add-word-form">
                                 <TextField
                                     style={{ margin: 0 }}
@@ -148,6 +159,7 @@ class AddWord extends Component {
                                       }}
                                 />
                                 <Button variant="outlined" color="primary" onClick={this.handleSearch}>SEARCH</Button>
+                                <h4>Powered by <a href="http://translate.yandex.com">Yandex.Translate</a></h4>
                                 <RadioGroup aria-label="language-choice" name="language-choice" value={this.state.inputLanguage} onChange={(event) => this.handleRadioChange(event)} row>
                                     <FormControlLabel
                                         value="en-ru"
@@ -169,17 +181,27 @@ class AddWord extends Component {
                             <Typography variant="subtitle1" component="p">
                                 Translation: {this.props.newWord.translationReducer}
                             </Typography>
+                            {this.props.newWord.imagesReducer[0] &&  
+                            <RefreshIcon 
+                                style={{position: 'absolute', right: '5%', bottom: '5%', color: '#26408B'}}
+                                onClick={() => {this.handleSetImageNumber()}}
+                            /> }
                         </CardContent>
-                        {this.props.newWord.imagesReducer[0] && <CardMedia
-                            title={this.props.newWord.translateFromReducer}
-                            src={this.props.newWord.imagesReducer[0].urls.regular}
-                            // Math.floor(Math.random() * this.props.imagesReducer.length) //function to find random image for translation
-                            className="add-word-image"
-                            component="img"
-                        >
-                        </CardMedia>}
+                        {this.props.newWord.imagesReducer[0] && 
+                            <CardMedia
+                                title={this.props.newWord.translateFromReducer}
+                                src={this.props.newWord.imagesReducer[this.state.imageNumber].urls.regular}
+                                className="add-word-image"
+                                component="img"
+                            >
+                            </CardMedia>}
                     </CardActionArea>
                 </Card>
+                {this.props.newWord.imagesReducer[0] && 
+                    <div style={{position: 'absolute', right: '2%', bottom: '12%', color: '#26408B', fontSize: 10}}>
+                        <p>Artist: {this.props.newWord.imagesReducer[this.state.imageNumber].user.name}</p>
+                        <p>Provided by Unsplash</p>
+                    </div>}
                 <Button size="small" color="secondary" variant="contained" style={{color: 'white'}} onClick={this.checkDataBaseForWord}>
                     Add Word
                 </Button>
