@@ -32,8 +32,14 @@ router.post('/existingWord',rejectUnauthenticated, (req, res) => {
 // also posts that word to the words_in_set, using set_id sent in req.body
 router.post('/newWord', rejectUnauthenticated, (req, res) => {
     console.log('in addWord/newWord post route, req.body:', req.body);
-    const queryText = `INSERT INTO "words" ("english_entry", "russian_entry", "image_url", "image_artist") 
-    VALUES ($1, $2, $3, $4) RETURNING id;`;
+    let queryText;
+    if (req.body.language === 'en-ru') {
+        queryText = `INSERT INTO "words" ("english_entry", "russian_entry", "image_url", "image_artist") 
+        VALUES ($1, $2, $3, $4) RETURNING id;`;
+    } else {
+        queryText = `INSERT INTO "words" ("russian_entry", "english_entry", "image_url", "image_artist") 
+        VALUES ($1, $2, $3, $4) RETURNING id;`;
+    }
     pool.query(queryText, [req.body.original_word, req.body.translation, req.body.image, req.body.imageAuthor])
     .then((results) => {
         console.log('results in /newWord:', results);

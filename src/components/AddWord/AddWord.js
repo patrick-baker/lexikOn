@@ -52,7 +52,8 @@ class AddWord extends Component {
                         translation: this.props.newWord.translationReducer,
                         image: this.props.newWord.imagesReducer[this.state.imageNumber].urls.regular,
                         imageAuthor: this.props.newWord.imagesReducer[this.state.imageNumber].user.name,
-                        set_id: this.props.match.params.setId
+                        set_id: this.props.match.params.setId,
+                        language: this.state.inputLanguage
                         }
                     })
                     // success snackbar appears after word addition
@@ -107,11 +108,11 @@ class AddWord extends Component {
         this.props.dispatch({ type: 'FETCH_TRANSLATION', payload: {
             language: this.state.inputLanguage,
             search: this.state.keyword.charAt(0).toUpperCase() + this.state.keyword.slice(1) 
-        }
-    });
-        this.setState({
-            imageNumber: Math.floor(Math.random() * this.props.imagesReducer.length)
-        })
+            }
+        });
+    this.setState({
+        keyword: ''
+    })
     }
 
      // toggle display of snackbar, opens when word successfully added
@@ -127,7 +128,7 @@ class AddWord extends Component {
 
     handleSetImageNumber = () => {
         this.setState({
-            imageNumber: Math.floor(Math.random() * this.props.imagesReducer.length)
+            imageNumber: Math.floor(Math.random() * this.props.newWord.imagesReducer.length)
         })
     }
 
