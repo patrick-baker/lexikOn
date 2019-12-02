@@ -51,7 +51,7 @@ function* addNewWordToSetSaga(action) {
 function* addExistingWordToSetSaga(action) {
     try {
         console.log('in addExistingWordToSetSaga, action.payload:', action.payload);
-        yield axios.post('api/addWord/existingWord', action.payload);
+        yield axios.post(`/api/addWord/existingWord`, action.payload);
     }
     catch (error) {
         console.log('error posting existing word in addExistingWordToSetSaga, error:', error);

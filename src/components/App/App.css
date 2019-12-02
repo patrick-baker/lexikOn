@@ -10,7 +10,7 @@
     -o-background-size: cover;
     background-size: cover;
     overflow: hidden;
-    opacity: .15;
+    opacity: .25;
     z-index: -1;
   }
 

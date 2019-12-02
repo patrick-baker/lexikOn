@@ -107,7 +107,8 @@ class WordsList extends Component {
                       </CardListPaper>
                     </Grid>
                 </Container>
-                {/* Maps through the cardSetWordsReducer to display the words on the screen. */} 
+                {/* Maps through the cardSetWordsReducer to display the words on the screen. */}
+                {this.props.words.cardSetWordsReducer[0] && this.props.words.cardSetWordsReducer[0].english_entry &&  
                 <WordsListContainer>
                 <WordsGridList cellHeight={180}>
                   {this.props.words.cardSetWordsReducer.map(word => (
@@ -130,7 +131,7 @@ class WordsList extends Component {
                     </GridListTile>
                   ))}
                 </WordsGridList>
-              </WordsListContainer>
+              </WordsListContainer>}
             </div>
         )
     }

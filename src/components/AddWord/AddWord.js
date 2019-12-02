@@ -141,7 +141,6 @@ class AddWord extends Component {
                         <CardContent style={{position: 'relative'}}>
                             <div className="add-word-form">
                                 <TextField
-                                    style={{ margin: 0 }}
                                     id="outlined-basic"
                                     label="Translate here"
                                     value={this.state.keyword}
@@ -149,7 +148,7 @@ class AddWord extends Component {
                                     variant="outlined"
                                     onChange={this.handleInput}
                                     color="primary"
-                                    style={{maxWidth: '50%'}}
+                                    style={{margin: 0, maxWidth: '50%'}}
                                     InputProps={{
                                         startAdornment: (
                                           <InputAdornment position="start">

@@ -20,7 +20,7 @@ router.get('/:search', rejectUnauthenticated, (req, res) => {
         }
     }).then( (result) => {
         res.send(result.data.results);
-        console.log(result.data.results);
+        // console.log(result.data.results);
     })
     .catch(error => {
         console.log('error in api GETTER', error);

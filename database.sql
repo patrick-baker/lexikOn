@@ -17,7 +17,8 @@ CREATE TABLE "words" (
     "id" SERIAL PRIMARY KEY,
     "english_entry" VARCHAR (80) NOT NULL,
     "russian_entry" VARCHAR (80) NOT NULL,
-    "image_url" VARCHAR (300) 
+    "image_url" VARCHAR (300),
+    "image_artist" VARCHAR (100) 
 );
 
 -- Card sets in application, viewable by everyone, only editable by creator
