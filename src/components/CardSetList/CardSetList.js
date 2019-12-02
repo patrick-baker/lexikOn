@@ -10,6 +10,7 @@ import Modal from '../Modal/Modal';
 
 const ListContainer = styled(Container) ({
     flexGrow: 1,
+    marginBottom: 90
 });
 
 const CardListGridItem = styled(Grid) ({

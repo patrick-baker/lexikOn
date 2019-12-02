@@ -103,14 +103,14 @@ class RegisterPage extends Component {
           </div>
         </form>
         <center>
-          <h6>Back to login.</h6>
-          <button
-            type="button"
-            className="link-button"
+          <p>Back to login.</p>
+          <br/>
+          <h6
             onClick={() => {this.props.dispatch({type: 'SET_TO_LOGIN_MODE'})}}
+            style={{color: '#26408B'}}
           >
             Login
-          </button>
+          </h6>
         </center>
       </>
     );

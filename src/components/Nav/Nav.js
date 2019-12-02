@@ -5,7 +5,6 @@ import LogOutButton from '../LogOutButton/LogOutButton';
 import LaunchRoundedIcon from '@material-ui/icons/LaunchRounded';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
-import './Nav.css';
 
 const Nav = (props) => (
   <div className="nav">

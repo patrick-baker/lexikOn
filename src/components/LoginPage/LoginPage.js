@@ -107,6 +107,7 @@ class LoginPage extends Component {
           <br/>
           <h6
             onClick={() => { this.props.dispatch({ type: 'SET_TO_REGISTER_MODE' }) }}
+            style={{color: '#26408B'}}
           >
             Register here
           </h6>

@@ -5,7 +5,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TranslateRoundedIcon from '@material-ui/icons/TranslateRounded';
 import './AddWord.css';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 
 import Modal from '../Modal/Modal';
 import SnackBar from '../MySnackBar/MySnackBar';
@@ -111,7 +110,7 @@ class AddWord extends Component {
         }
     });
         this.setState({
-            imageNumber: Math.floor(Math.random() * 10)
+            imageNumber: Math.floor(Math.random() * this.props.imagesReducer.length)
         })
     }
 
@@ -128,14 +127,14 @@ class AddWord extends Component {
 
     handleSetImageNumber = () => {
         this.setState({
-            imageNumber: Math.floor(Math.random() * 10)
+            imageNumber: Math.floor(Math.random() * this.props.imagesReducer.length)
         })
     }
 
     render() {
         return (
             <div className="card-container">
-                <h4 style={{margin: 0}}>New Word Card</h4>
+                {/* <h4 style={{margin: 0}}>New Word Card</h4> */}
                 <Card className="new-word-card">
                     <CardActionArea>
                         <CardContent style={{position: 'relative'}}>
@@ -149,7 +148,7 @@ class AddWord extends Component {
                                     variant="outlined"
                                     onChange={this.handleInput}
                                     color="primary"
-                                    style={{maxWidth: '150px'}}
+                                    style={{maxWidth: '50%'}}
                                     InputProps={{
                                         startAdornment: (
                                           <InputAdornment position="start">
@@ -158,7 +157,7 @@ class AddWord extends Component {
                                         )
                                       }}
                                 />
-                                <Button variant="outlined" color="primary" onClick={this.handleSearch}>SEARCH</Button>
+                                <Button variant="outlined" color="primary" onClick={this.handleSearch} style={{maxWidth: '45%'}}>SEARCH</Button>
                                 <h4>Powered by <a href="http://translate.yandex.com">Yandex.Translate</a></h4>
                                 <RadioGroup aria-label="language-choice" name="language-choice" value={this.state.inputLanguage} onChange={(event) => this.handleRadioChange(event)} row>
                                     <FormControlLabel
@@ -190,7 +189,7 @@ class AddWord extends Component {
                         {this.props.newWord.imagesReducer[0] && 
                             <CardMedia
                                 title={this.props.newWord.translateFromReducer}
-                                src={this.props.newWord.imagesReducer[this.state.imageNumber].urls.regular}
+                                src={this.props.newWord.imagesReducer[this.state.imageNumber].urls.regular + "&w=1000&h=1000&crop=faces"}
                                 className="add-word-image"
                                 component="img"
                             >
@@ -198,7 +197,7 @@ class AddWord extends Component {
                     </CardActionArea>
                 </Card>
                 {this.props.newWord.imagesReducer[0] && 
-                    <div style={{position: 'absolute', right: '2%', bottom: '12%', color: '#26408B', fontSize: 10}}>
+                    <div style={{position: 'absolute', right: '.5%', bottom: '8%', color: '#26408B', fontSize: 10}}>
                         <p>Artist: {this.props.newWord.imagesReducer[this.state.imageNumber].user.name}</p>
                         <p>Provided by Unsplash</p>
                     </div>}

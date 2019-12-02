@@ -15,6 +15,8 @@ router.get('/:search', rejectUnauthenticated, (req, res) => {
             client_id: process.env.UNSPLASH_API_ACCESS_KEY,
             query: req.params.search,
             orientation: 'portrait',
+            w: 1000,
+            h: 1000
         }
     }).then( (result) => {
         res.send(result.data.results);

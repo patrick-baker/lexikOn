@@ -10,7 +10,8 @@ router.get('/cardSet/:id', rejectUnauthenticated, (req, res) => {
     const queryText = `SELECT "set_id", "name" as "set_name", "words_in_sets"."id" as "wordInSetId", "creator_user_id", "english_entry", "russian_entry", "image_url", "image_artist" FROM "words"
     RIGHT OUTER JOIN "words_in_sets" ON "words_in_sets"."word_id" = "words"."id"
     RIGHT OUTER JOIN "card_sets" ON "card_sets"."id" = "words_in_sets"."set_id"
-    WHERE "card_sets"."id" = $1;`;
+    WHERE "card_sets"."id" = $1
+    ORDER BY "english_entry";`;
     pool.query(queryText, [req.params.id])
     .then(results => {
         console.log(`successful call to route /api/words/cardSet/${req.params.id}, results:`, results.rows);

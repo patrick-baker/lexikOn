@@ -15,6 +15,7 @@
 .card-container {
     height: 80vh;
     width: 85vw;
+    max-width: 1000px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -30,4 +31,8 @@
 
 * {
     margin: 0;
+}
+
+.MuiCardContent-root {
+    padding: 10px !important;
 }

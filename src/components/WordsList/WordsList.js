@@ -116,7 +116,7 @@ class WordsList extends Component {
                       {/* <DeleteWordIcon></DeleteWordIcon> */}
                       <GridListTileBar
                         title={<div>En: {word.english_entry}<br/>Ру: {word.russian_entry}</div>}
-                        subtitle={word.image_artist}
+                        subtitle={<p>Photo: {word.image_artist}</p>}
                         actionIcon={
                           this.state.removeWordMode && 
                           <IconButton 
