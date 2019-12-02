@@ -11,20 +11,21 @@ class Modal extends Component {
                 onClose={this.props.handleClose}
                 aria-labelledby={this.props.ariaLabelledBy}
                 aria-describedby={this.props.ariaDescribedBy}
+                style={{textAlign: 'center'}}
             >
-                <DialogTitle>{this.props.title}</DialogTitle>
+                <DialogTitle style={{color: '#26408B'}}>{this.props.title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText style={{color: '#26408B'}}>
                         {this.props.description}
                         </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.agreeFunction} color="primary">
+                    <Button onClick={this.props.agreeFunction} color="primary" variant="contained">
                         {this.props.agreeText}
                         </Button>
                     {/* Pressing agree should add the preexisting word to the card set, 
                         Post request to cards_words junction table */}
-                    <Button onClick={this.props.disagreeFunction} color="primary" autoFocus>
+                    <Button onClick={this.props.disagreeFunction} color="primary" variant="contained" autoFocus>
                         {this.props.disagreeText}
                         </Button>
                 </DialogActions>

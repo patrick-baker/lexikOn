@@ -6,7 +6,8 @@ class inverseUserCardSets extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{textAlign: 'center'}}>
+                <h3 style={{color: '#81B1D5'}}>Add A Set</h3>
                 <CardSetList listType="inverseUserSets"/>
             </div>
         )

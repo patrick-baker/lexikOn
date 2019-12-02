@@ -5,7 +5,6 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import CardSetList from '../CardSetList/CardSetList';
 import './UserCardSets.css';
-import Swal from 'sweetalert2';
 import Modal from '../Modal/Modal';
 import SnackBar from '../MySnackBar/MySnackBar';
 
@@ -90,7 +89,8 @@ class UserCardSets extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{textAlign: 'center'}}>
+                <h3 style={{color: '#81B1D5'}}>Your Card Sets</h3>
                 {/* Conditional rendering of add and delete card set buttons if add new card mode is false */}
                 {this.state.newCardMode === false && <div className="button-container"> 
                     <Fab color="primary" aria-label="add set" onClick={() => this.setState({open: true})}>

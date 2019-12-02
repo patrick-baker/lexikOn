@@ -20,12 +20,12 @@
     align-items: center;
     flex-direction: column;
     margin: auto;
+    position: relative;
 }
 
 .new-word-card {
     width: 80%;
     height: 80%;
-    position: relative;
 }
 
 * {
