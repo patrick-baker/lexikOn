@@ -1,115 +1,61 @@
-# Prime Project
-This version uses React, Redux, Express, Passport, and PostgreSQL (a full list of dependencies can be found in `package.json`).
+# LexikOn
 
-We **STRONGLY** recommend following these instructions carefully. It's a lot, and will take some time to set up, but your life will be much easier this way in the long run.
+## Description
+_Duration: 2-Week Sprint_
 
-## Download (Don't Clone) This Repository
+LexikOn is created for Russian learners of English who would like to improve their vocabulary in their target language. Whether through reading books, speaking to native speakers, or watching movies and TV shows, these learners are bound to come across new words, which they should like to record and review to learn that new word. With LexikOn, these learners can use a nifty translation system to create word cards with the translated term and an image to boot. These cards are organized in card sets, which users can share and review at their convenience.
 
-* Don't Fork or Clone. Instead, click the `Clone or Download` button and select `Download Zip`.
-* Unzip the project and start with the code in that folder.
-* Create a new GitHub project and push this code to the new repository.
+## Usage
 
-## Prerequisites
+1. After logging in, users will be brought to their ```home``` page, which will list all of their active card sets.
+2. By clicking the plus button near the top of the ```home``` page, users can add a new card set to their list; they can use another users premade set, or they can create their own. 
+3. By clicking the edit button near the top ```home``` page, users can remove sets from their list, or edit the name of the set if they are that set's creator. Note that a set will be permanently deleted if a user tries to remove their own set from their list.
+4. By clicking on a set, a user will go to that set's ```word list``` page.
+5. The ```word list``` page shows all of the words in the chosen set. If the user is the set's creator, there will be a plus button and an x button near the set title. The plus button brings the user to the ```add word```, while the x button allows the user to delete a word from that set.
+6. The ```add word``` page allows a user to enter input, either Russian or English, and generates a translation in the target language for that user. An image is also generated for the translation. If a user is satisfied with the output, they can add the word by pressing the Add Word button near the bottom of the screen, and that word will be added to their card set.
 
-Before you get started, make sure you have the following software installed on your computer:
+### Prerequisites
+
+Link to software that is required to install the app (e.g. node).
 
 - [Node.js](https://nodejs.org/en/)
-- [PostrgeSQL](https://www.postgresql.org/)
-- [Nodemon](https://nodemon.io/)
+- [PostgreSQL](https://www.postgresql.org/download/)
 
-## Create database and table
+## Installation
 
-Create a new database called `prime_app` and create a `user` table:
-
-```SQL
-CREATE TABLE "user" (
-    "id" SERIAL PRIMARY KEY,
-    "username" VARCHAR (80) UNIQUE NOT NULL,
-    "password" VARCHAR (1000) NOT NULL
-);
-```
-
-If you would like to name your database something else, you will need to change `prime_app` to the name of your new database name in `server/modules/pool.js`
-
-## Development Setup Instructions
-
-* Run `npm install`
-* Create a `.env` file at the root of the project and paste this line into the file:
-    ```
-    SERVER_SESSION_SECRET=superDuperSecret
-    ```
-    While you're in your new `.env` file, take the time to replace `superDuperSecret` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
-* Start postgres if not running already by using `brew services start postgresql`
-* Run `npm run server`
-* Run `npm run client`
-* Navigate to `localhost:3000`
-
-## Debugging
-
-To debug, you will need to run the client-side separately from the server. Start the client by running the command `npm run client`. Start the debugging server by selecting the Debug button.
-
-![VSCode Toolbar](documentation/images/vscode-toolbar.png)
-
-Then make sure `Launch Program` is selected from the dropdown, then click the green play arrow.
-
-![VSCode Debug Bar](documentation/images/vscode-debug-bar.png)
+1. Get to main project directory in command line, assuming node is installed, and type in `npm install` to install required dependencies.
+2. Install postgreSQL at [this](https://www.postgresql.org/download/) link.
+3. Install postgreSQL GUI like [Postico](https://eggerapps.at/postico/).
+4. Run commands from database.sql file in Postico to create table, in `prime_feedback` database.
 
 
-## Testing Routes with Postman
+## Built With
+- _node.js_
+- _Express.js_
+- _React_ 
+- _Redux_
+- _Redux-Sagas_
+- _postgreSQL_
+- _MaterialUI_
+- _React-Transition-Group_
+- _Yandex-Translate-API_
+- _Unsplash-API_
 
-To use Postman with this repo, you will need to set up requests in Postman to register a user and login a user at a minimum. 
+## Support
 
-Keep in mind that once you using the login route, Postman will manage your session cookie for you just like a browser, ensuring it is sent with each subsequent request. If you delete the `localhost` cookie in Postman, it will effectively log you out.
+If you have any questions, feel free to email me at bakerpj1992@gmail.com
 
-1. Start the server - `npm run server`
-2. [Import the sample routes JSON file](./PostmanPrimeSoloRoutes.json) by clicking `Import` in Postman. Select the file.
-3. Click `Collections` and `Send` the following three calls in order:
-    1. `POST /api/user/register` registers a new user, see body to change username/password
-    2. `POST /api/user/login` will login a user, see body to change username/password
-    3. `GET /api/user` will get user information, by default it's not very much
+## Acknowledgments
 
-After running the login route above, you can try any other route you've created that requires a logged in user!
+* Shoutout to all of Prime staff for being so supportive and being such great teachers.
+* Thanks to Yandex and Unsplash for having great documentation and APIs that are quick and easy to implement.
 
+---
 
-## Production Build
+## Where I want to go from here
 
-Before pushing to Heroku, run `npm run build` in terminal. This will create a build folder that contains the code Heroku will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
-
-* Start postgres if not running already by using `brew services start postgresql`
-* Run `npm start`
-* Navigate to `localhost:5000`
-
-## Lay of the Land
-
-* `src/` contains the React application
-* `public/` contains static assets for the client-side
-* `build/` after you build the project, contains the transpiled code from `src/` and `public/` that will be viewed on the production site
-* `server/` contains the Express App
-
-This code is also heavily commented. We recommend reading through the comments, getting a lay of the land, and becoming comfortable with how the code works before you start making too many changes. If you're wondering where to start, consider reading through component file comments in the following order:
-
-* src/components
-  * App/App
-  * Footer/Footer
-  * Nav/Nav
-  * AboutPage/AboutPage
-  * InfoPage/InfoPage
-  * UserPage/UserPage
-  * LoginPage/LoginPage
-  * RegisterPage/RegisterPage
-  * LogOutButton/LogOutButton
-  * ProtectedRoute/ProtectedRoute
-
-## Deployment
-
-1. Create a new Heroku project
-1. Link the Heroku project to the project GitHub Repo
-1. Create an Heroku Postgres database
-1. Connect to the Heroku Postgres database from Postico
-1. Create the necessary tables
-1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
-1. In the deploy section, select manual deploy
-
-## Update Documentation
-
-Customize this ReadMe and the code comments in this project to read less like a starter repo and more like a project. Here is an example: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
+- [ ] Study mode, which allows a user to study words from either origin language, and keeps track of their success throughout (correct guesses, date since last correct[most likely using moment.js], amount of times guessed, a guess timer, and some algorigthm for deciding the order in which to show the words).
+- [ ] A words information page that renders according to user, with their information in regards to study mode.
+- [ ] Some sort of gamification to encorage users to study more often.
+- [ ] A search feature which allows users to search all translations stored in the database.
+- [ ] Improvements to the UI which make it more intuitive for new users.
