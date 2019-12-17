@@ -52,6 +52,7 @@ class App extends Component {
       <Router>
       <Route render={({ location }) => (
         <div >
+          <div className="site-content">
         {this.props.user.id &&
         <div className="top-title">
           <Link to="/home" style={{textDecoration: 'none'}}>
@@ -109,6 +110,7 @@ class App extends Component {
           </Switch> 
           </CSSTransition>
           </TransitionGroup>
+          </div>
           <Nav />
           {/* <pre>{JSON.stringify(this.props)}</pre> */}
         </div>
