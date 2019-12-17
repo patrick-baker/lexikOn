@@ -14,6 +14,11 @@
     z-index: -1;
   }
 
+/* makes up for fixed navbar on the bottom of screen */
+.site-content {
+  margin-bottom: 98px;
+}
+
 .center-container {
     text-align: center;
     margin-top: 40%;
