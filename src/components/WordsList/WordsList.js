@@ -23,7 +23,8 @@ const CardListPaper = styled(Paper) ({
   maxWidth: 500,
   padding: 15,
   backgroundColor: '#f7f7f7',
-  color: '#26408B'
+  color: '#26408B',
+  margin: 'auto'
 })
 
 const DeleteWordIcon = styled(ClearRoundedIcon) ({

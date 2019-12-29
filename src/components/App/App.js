@@ -51,7 +51,7 @@ class App extends Component {
       <ThemeProvider theme={myTheme}>
       <Router>
       <Route render={({ location }) => (
-        <div >
+        <div>
           <div className="site-content">
         {this.props.user.id &&
         <div className="top-title">
