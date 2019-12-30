@@ -91,6 +91,11 @@ class WordsList extends Component {
               </div>
             </CardListPaper>
           </Grid>
+          {/* Renders the follow directions depending on whether the user was the set creator. */}
+          {(this.props.words.cardSetWordsReducer[0] &&
+            this.props.words.cardSetWordsReducer[0].creator_user_id == this.props.user.id) ?
+            <h3 style={{marginBottom: '10px'}}>You are the set creator. Feel free to review or edit this set.</h3> : 
+            <h3 style={{marginBottom: '10px'}}>You are not the set creator. You may only review this set.</h3>}
         </Container>
         {this.props.words.cardSetWordsReducer[0] && this.props.words.cardSetWordsReducer[0].english_entry &&
         // Media query for responsiveness, resizes the WordsGrid based on screen size,
