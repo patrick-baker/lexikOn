@@ -49,7 +49,7 @@ class LoginPage extends Component {
         )}
         <div className="center-container">
           <h1 className="title"><b>LexikOn</b></h1>
-          <h4>Practice your new words anywhere.</h4>
+          <h4>Practice your new Russian words anywhere.</h4>
         </div>
         <form onSubmit={this.login}>
           <div>

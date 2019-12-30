@@ -91,6 +91,7 @@ class UserCardSets extends Component {
         return (
             <div style={{textAlign: 'center'}}>
                 <h3 style={{color: '#81B1D5'}}>Your Card Sets</h3>
+                <p style={{marginTop: '10px', marginBottom: '10px'}}>Press on a set to manage and review words in that set.</p>
                 {/* Conditional rendering of add and delete card set buttons if add new card mode is false */}
                 {this.state.newCardMode === false && <div className="button-container"> 
                     <Fab color="primary" aria-label="add set" onClick={() => this.setState({open: true})}>
