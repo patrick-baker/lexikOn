@@ -5,7 +5,6 @@ import { styled } from '@material-ui/core/styles';
 import {withRouter} from 'react-router-dom';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
-import './CardSetList.css';
 import Modal from '../Modal/Modal';
 
 const ListContainer = styled(Container) ({
