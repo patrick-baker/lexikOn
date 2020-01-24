@@ -39,9 +39,9 @@ class WordsList extends Component {
     // makes sure that the user card set reducer is up to date
     this.props.dispatch({ type: 'FETCH_USER_CARD_SETS' });
     // filters the correct card set out of userCardSetReducers, to check if the user is the creator
-    const thisCardSet = this.props.cardSets.userCardSetsReducer.filter(set => set.id == setId);
+    const thisCardSet = this.props.cardSets.userCardSetsReducer.filter(set => Number(set.id) === Number(setId));
     // check whether the current user is the creator of the card set
-    if (thisCardSet[0].creator_user_id == this.props.user.id) {
+    if (thisCardSet[0].creator_user_id === this.props.user.id) {
       // brings the user to the add word page, with setId as props so word can be added to this card set
       this.props.history.push(`/add-word/${this.props.match.params.id}`)
     } else {
@@ -83,7 +83,7 @@ class WordsList extends Component {
                 </div>
                 {// only renders the delete word mode button and add word button for the creator of the set
                   (this.props.words.cardSetWordsReducer[0] &&
-                    this.props.words.cardSetWordsReducer[0].creator_user_id == this.props.user.id) &&
+                    this.props.words.cardSetWordsReducer[0].creator_user_id === this.props.user.id) &&
                   <div className="flex-container" style={{ width: '15%', justifyContent: 'space-between' }}>
                     <AddRoundedIcon onClick={() => this.handleAddWordToCardSet(this.props.match.params.id)} />
                     <ClearRoundedIcon onClick={() => this.handleRemoveWordMode()} />
@@ -93,7 +93,7 @@ class WordsList extends Component {
           </Grid>
           {/* Renders the follow directions depending on whether the user was the set creator. */}
           {(this.props.words.cardSetWordsReducer[0] &&
-            this.props.words.cardSetWordsReducer[0].creator_user_id == this.props.user.id) ?
+            this.props.words.cardSetWordsReducer[0].creator_user_id === this.props.user.id) ?
             <h3 style={{marginBottom: '10px'}}>You are the set creator. Feel free to review or edit this set.</h3> : 
             <h3 style={{marginBottom: '10px'}}>You are not the set creator. You may only review this set.</h3>}
         </Container>
