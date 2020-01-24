@@ -55,7 +55,6 @@ class LoginPage extends Component {
           <div>
             <TextField
               style={{ margin: 0 }}
-              id="outlined-basic"
               label="Username"
               margin="normal"
               variant="filled"
@@ -74,7 +73,6 @@ class LoginPage extends Component {
           <div>
           <TextField
               style={{ margin: 0 }}
-              id="outlined-basic"
               label="Password"
               margin="normal"
               type="password"

@@ -73,7 +73,7 @@ class CardSetList extends Component {
     // dispatches remove set saga when the delete is hit on a given card set
     handleRemoveCardSet = (setId, creatorId) => {
         console.log('setId, creatorId in handleRemoveCardSet', setId, creatorId);
-        creatorId == this.props.user.id ?
+        creatorId === this.props.user.id ?
         // opens modal to ensure that the user wants to permanently delete the chosen card set if the user is the creator
         this.setState({
             open: true,
@@ -165,7 +165,7 @@ class CardSetList extends Component {
                                         <div className="flex-container" style={{width: '15%', justifyContent: 'space-between', flexDirection: 'row-reverse'}}>
                                             <DeleteRoundedIcon onClick={() => this.handleRemoveCardSet(set.id, set.creator_user_id)}/>
                                             { // only renders the edit button for the creator of the set
-                                            (set.creator_user_id == this.props.user.id) &&
+                                            (set.creator_user_id === this.props.user.id) &&
                                             <EditRoundedIcon onClick={() => this.handleEditMode(set.id, set.name)}/>}
                                         </div>
                                     }
